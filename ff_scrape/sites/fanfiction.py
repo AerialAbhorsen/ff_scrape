@@ -1,6 +1,7 @@
 from ff_scrape.storybase import Chapter
 from ff_scrape.errors import URLError
 from ff_scrape.fanficsite import Site
+from ff_scrape.standardization import *
 from urllib.parse import urljoin
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -101,12 +102,12 @@ class Fanfiction(Site):
         # record rating
         rating_tag = top_profile.find('a', {'target': 'rating'})
         rating_split = rating_tag.string.split(" ")
-        self._fanfic.rating = rating_split[1]
+        self._fanfic.rating = standardize_rating(rating_split[1])
 
         # the remaining attributes need to be positionally extracted from story meta
         metadata_tags = self._soup.find('span', {'class': 'xgray xcontrast_txt'})
         metadata = [s.strip() for s in metadata_tags.text.split('-')]
-        self._fanfic.add_genre(metadata[2])
+        self._fanfic.add_genre(standardize_genre(metadata[2]))
         if 'Complete' in metadata:
             self._fanfic.status = 'Complete'
         else:
@@ -119,17 +120,18 @@ class Fanfiction(Site):
             pairing = pairing.replace('[', '').replace(']', '')
             pairing_arr = pairing.split(', ')
             for person in pairing_arr:
-                self._fanfic.add_character(person)
+                self._fanfic.add_character(standardize_character(person))
             self._fanfic.add_pairing(pairing_arr)
         non_pairing = pairing_match.sub('', people_str)
         non_pairing = non_pairing.strip()
         for person in non_pairing.split(', '):
-            self._fanfic.add_character(person)
+            self._fanfic.add_character(standardize_character(person))
 
     def record_story_chapters(self):
         """Record the chapters of the fanfic"""
         chapters = self._soup.find(id='chap_select').contents
 
+        # get the chapters
         for chapter in chapters:
             time.sleep(self._chapter_sleep_time)
             chapter_object = Chapter()

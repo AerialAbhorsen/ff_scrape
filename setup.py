@@ -8,7 +8,9 @@ setup(
     packages=['ff_scrape', 'ff_scrape.sites'],
     install_requires=[
         'beautifulsoup4',
-        'requests'
+        'requests',
+        'html5lib',
+        'python-dateutil'
     ],
     entry_points={
         'console_scripts': [
@@ -16,7 +18,8 @@ setup(
         ],
         'ff_scrape.sites': [
             'Fanfiction=ff_scrape.sites.fanfiction:Fanfiction',
-            'HPFanficArchive=ff_scrape.sites.hpfanficarchive:HPFanficArchive'
+            'HPFanficArchive=ff_scrape.sites.hpfanficarchive:HPFanficArchive',
+            'FanficAuthors=ff_scrape.sites.fanficauthors:FanficAuthors'
         ],
         # 'ff_scrape.formatters': [
         #     'text=ff_scrape.formatters.text:Text'

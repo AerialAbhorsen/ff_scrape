@@ -3,6 +3,7 @@ fanfiction stories"""
 from ff_scrape.storybase import Chapter
 from ff_scrape.errors import URLError
 from ff_scrape.fanficsite import Site
+from ff_scrape.standardization import *
 from urllib.parse import urljoin
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -95,10 +96,7 @@ class HPFanficArchive(Site):
                 # note which one we saw
                 parsed_key = item.text.replace(':', '').lower().strip()
                 if parsed_key == 'rated':
-                    rating = item.next_sibling
-                    if rating.strip() == 'NC-17 - No One 17 and Under Admitted':
-                        rating = 'NC-17'
-                    self._fanfic.rating = rating
+                    self._fanfic.rating = standardize_rating(item.next_sibling)
                 elif parsed_key == 'published':
                     self._fanfic.published = datetime.strptime(item.next_sibling.next_sibling + "T00:00:00", pattern)
                 elif parsed_key == 'updated':
@@ -110,20 +108,19 @@ class HPFanficArchive(Site):
                 if parsed_key == 'summary':
                     summary_text += item.text
                 elif parsed_key == 'categories':
-                    self._fanfic.add_category(item.text)
+                    self._fanfic.add_category(standardize_category(item.text))
                 elif parsed_key == 'status':
-                    status = item.text
-                    if status == 'WIP (Work in progress)':
-                        status = 'WIP'
-                    self._fanfic.status = status
+                    self._fanfic.status = standardize_status(item.text)
                 elif parsed_key == 'characters':
-                    self._fanfic.add_character(item.text)
+                    self._fanfic.add_character(standardize_character(item.text))
                 elif parsed_key == 'pairings':
                     self._fanfic.add_pairing(item.text.split("/"))
                 elif parsed_key == 'genres':
-                    self._fanfic.add_genre(item.text)
+                    self._fanfic.add_genre(standardize_genre(item.text))
                 elif parsed_key == 'warnings':
-                    self._fanfic.add_warning(item.text)
+                    warning = standardize_warning(item.text)
+                    if warning is not None:
+                        self._fanfic.add_warning(warning)
         self._fanfic.summary = summary_text
 
         # set author and title
@@ -138,20 +135,17 @@ class HPFanficArchive(Site):
 
     def record_story_chapters(self):
         """Record the chapters of the fanfic"""
-        # build the toc
+        # get the chapters
         for chapter in self.chapter_list:
             time.sleep(self._chapter_sleep_time)
-            # data = chapter['href'].replace("viewstory.php?", "").replace("&", "=").split("=")
-            # chapter_number = data[data.index("chapter")+1]
-            # chapter_name = chapter.contents[0]
-            # self._fanfic.append_toc(int(chapter_number), chapter_name)
             self.log_debug("Downloading chapter:" + chapter['name'])
             url_fixed = urljoin(self.url, chapter['link'])
+
             # get page
             page = requests.get(url_fixed)
             self._soup = BeautifulSoup(page.text, features="html.parser")
             story = self._soup.find(id='story')
-            body = ""
+
             chapter_object = Chapter()
             chapter_object.raw_body = story.prettify()
             chapter_object.word_count = len(story.text.split())
