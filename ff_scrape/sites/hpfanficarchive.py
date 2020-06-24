@@ -6,15 +6,13 @@ from ff_scrape.fanficsite import Site
 from ff_scrape.standardization import *
 from urllib.parse import urljoin
 from datetime import datetime
-from bs4 import BeautifulSoup
-import requests
 import re
 import time
 
 class HPFanficArchive(Site):
     """Provides the logic to parse fanfics from hpfanficarchive.com"""
 
-    def __init__(self, site_params=[]):
+    def __init__(self, site_params={}):
         super().__init__(logger_name='ff_scrape.site.HPFanficArchive',
                          site_params=site_params)
         self.chapter_list = []
@@ -142,8 +140,7 @@ class HPFanficArchive(Site):
             url_fixed = urljoin(self.url, chapter['link'])
 
             # get page
-            page = requests.get(url_fixed)
-            self._soup = BeautifulSoup(page.text, features="html.parser")
+            self._update_soup(url=url_fixed)
             story = self._soup.find(id='story')
 
             chapter_object = Chapter()

@@ -5,9 +5,6 @@ from ff_scrape.errors import URLError
 from ff_scrape.fanficsite import Site
 from ff_scrape.standardization import *
 from urllib.parse import urljoin, urlparse, urlunparse
-from datetime import datetime
-from bs4 import BeautifulSoup
-import requests
 import re
 import time
 from dateutil.parser import parse
@@ -15,7 +12,7 @@ from dateutil.parser import parse
 class FanficAuthors(Site):
     """Provides the logic to parse fanfics from fanficauthors.net"""
 
-    def __init__(self, site_params=[]):
+    def __init__(self, site_params={}):
         super().__init__(logger_name='ff_scrape.site.FanficAuthors',
                          site_params=site_params)
         self.chapter_list = []
@@ -123,8 +120,7 @@ class FanficAuthors(Site):
             url_fixed = urlunparse(self._url_obj._replace(path=chapter['link'], query='bypass=1'))
 
             # get page
-            page = requests.get(url_fixed)
-            self._soup = BeautifulSoup(page.text, features="html.parser")
+            self._update_soup(url=url_fixed)
             story = self._soup.find(id='story')
 
             story_container = story.find_all(True, {'class': 'story'})[0]

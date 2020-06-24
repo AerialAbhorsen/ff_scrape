@@ -23,6 +23,7 @@ def standardize_character(character):
 
 def standardize_warning(warning):
     warning = warning.strip()
+    warning = warning.replace(' / ', '/')
     return warning
 
 def standardize_category(category):

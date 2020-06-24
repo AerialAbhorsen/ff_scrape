@@ -87,12 +87,20 @@ class Site(object):
 
         self.log_info("Done processing story")
 
+    def _update_soup(self, url=None, lenient=True, cookie_jar=None):
+        if url is None:
+            url = self._url
+        page = requests.get(url)
+        if lenient:
+            self._soup = BeautifulSoup(page.text, features="html.parser", cookies=cookie_jar)
+        else:
+            # need to use html5lib due to ff.net having broken html in their site
+            # most notably the chapter list
+            self._soup = BeautifulSoup(page.text, features="html5lib", cookies=cookie_jar)
+
     def get_meta(self):
         # get page
-        page = requests.get(self._url)
-        # need to use html5lib due to ff.net having broken html in their site
-        # most notably the chapter list
-        self._soup = BeautifulSoup(page.text, features="html5lib")
+        self._update_soup(lenient=False)
 
         # check to see that the story exists
         if not self.check_story_exists():

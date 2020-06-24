@@ -4,8 +4,6 @@ from ff_scrape.fanficsite import Site
 from ff_scrape.standardization import *
 from urllib.parse import urljoin
 from datetime import datetime
-from bs4 import BeautifulSoup
-import requests
 import re
 import time
 
@@ -13,7 +11,7 @@ import time
 class Fanfiction(Site):
     """Provides the logic to parse fanfics from fanfiction.net"""
 
-    def __init__(self, site_params=[]):
+    def __init__(self, site_params={}):
         super().__init__(logger_name='ff_scrape.site.Fanfiction',
                          site_params=site_params)
 
@@ -136,8 +134,7 @@ class Fanfiction(Site):
             time.sleep(self._chapter_sleep_time)
             chapter_object = Chapter()
             self.log_debug("Downloading chapter: " + chapter.attrs['value'])
-            page = requests.get(self._url[0:-1]+chapter['value'])
-            self._soup = BeautifulSoup(page.text, features="html.parser")
+            self._update_soup(url=self._url[0:-1]+chapter['value'])
             chapter_text = ""
             chapter_count = 0
             story_tag = self._soup.find(id="storytextp")

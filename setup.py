@@ -19,7 +19,8 @@ setup(
         'ff_scrape.sites': [
             'Fanfiction=ff_scrape.sites.fanfiction:Fanfiction',
             'HPFanficArchive=ff_scrape.sites.hpfanficarchive:HPFanficArchive',
-            'FanficAuthors=ff_scrape.sites.fanficauthors:FanficAuthors'
+            'FanficAuthors=ff_scrape.sites.fanficauthors:FanficAuthors',
+            'Ficwad=ff_scrape.sites.ficwad:Ficwad'
         ],
         # 'ff_scrape.formatters': [
         #     'text=ff_scrape.formatters.text:Text'
