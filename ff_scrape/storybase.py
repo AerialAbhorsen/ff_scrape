@@ -9,10 +9,13 @@ class Chapter(object):
     __word_count: int
     __body: str
     __raw_body: str
+    __processed_body: str
+    __name: str
 
     def __init__(self):
         self.__word_count = 0
         self.__raw_body = ""
+        self.__processed_body = ""
         self.__name = ""
 
     @property
@@ -22,6 +25,14 @@ class Chapter(object):
     @word_count.setter
     def word_count(self, count)-> None:
         self.__word_count = count
+
+    @property
+    def processed_body(self) -> str:
+        return self.__processed_body
+
+    @processed_body.setter
+    def processed_body(self, val) -> None:
+        self.__processed_body = val
 
     @property
     def raw_body(self) -> str:
@@ -46,20 +57,20 @@ class Story(object):
     _title: str
     _url: str
     _author_url: str
-    _parsed_time: datetime
-    _chapters: deque
+    _chapters: deque[Chapter]
     _domain: str
     _status: str
-    _universe: deque
-    _categories: deque
-    _genres: deque
+    _universe: deque[str]
+    _categories: deque[str]
+    _genres: deque[str]
     _published: datetime
     _updated: datetime
     _summary: str
     _rating: str
-    _pairings: deque
-    _warnings: deque
-    _characters: deque
+    _pairings: deque[str]
+    _warnings: deque[str]
+    _characters: deque[str]
+    _raw_index_page: str
 
     def __init__(self, url, **kwargs):
         self._url = url
@@ -176,4 +187,10 @@ class Story(object):
 
     @property
     def chapter_count(self) -> int: return len(self._chapters)
+
+    @property
+    def raw_index_page(self) -> str: return self._raw_index_page
+
+    @raw_index_page.setter
+    def raw_index_page(self, value) -> None: self._raw_index_page = value
 

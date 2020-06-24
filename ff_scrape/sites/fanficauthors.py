@@ -4,13 +4,15 @@ from ff_scrape.storybase import Chapter
 from ff_scrape.errors import URLError
 from ff_scrape.fanficsite import Site
 from ff_scrape.standardization import *
-from urllib.parse import urljoin, urlparse, urlunparse
+from urllib.parse import urljoin, urlparse, urlunparse, ParseResult
 import re
 import time
 from dateutil.parser import parse
 
 class FanficAuthors(Site):
     """Provides the logic to parse fanfics from fanficauthors.net"""
+    chapter_list: [dict]
+    _url_obj: ParseResult
 
     def __init__(self, site_params={}):
         super().__init__(logger_name='ff_scrape.site.FanficAuthors',
@@ -18,17 +20,17 @@ class FanficAuthors(Site):
         self.chapter_list = []
         self._url_obj = None
 
-    def set_domain(self):
+    def set_domain(self) -> None:
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "fanficauthors.net"
 
-    def can_handle(self, url):
+    def can_handle(self, url) -> bool:
         if 'fanficauthors.net/' in url:
             return True
         return False
 
     @Site.url.setter
-    def url(self, value):
+    def url(self, value) -> None:
         """Allows for the URL to be changed to parse another fanfic"""
         if self._fanfic_set:
             del self._fanfic
@@ -41,7 +43,7 @@ class FanficAuthors(Site):
         self._url = value
         self._url_obj = urlparse(value)
 
-    def correct_url(self, url):
+    def correct_url(self, url) -> str:
         """Perform the necessary steps to correct the supplied URL so the parser can work with it"""
         # check if url has "http://" or "https://" prefix
         if "http://" not in url and "https://" not in url:
@@ -56,7 +58,7 @@ class FanficAuthors(Site):
             url = urljoin('/'.join(url_split), 'index')
         return url
 
-    def check_story_exists(self):
+    def check_story_exists(self) -> bool:
         """Verify that the fanfic exists"""
         title = self._soup.find('title')
         if title.contents == 'Not Found':
@@ -64,11 +66,11 @@ class FanficAuthors(Site):
             return False
         return True
 
-    def cleanup_custom_vars(self):
+    def cleanup_custom_vars(self) -> None:
         self.chapter_list = []
         self._url_obj = None
 
-    def record_story_metadata(self):
+    def record_story_metadata(self) -> None:
         """Record the metadata of the fanfic"""
 
         # get title and author from top center
@@ -81,6 +83,7 @@ class FanficAuthors(Site):
         # get metadata info from story summary div
         metadata_container = self._soup.find_all(True, {'class': 'well'})[0]
         self._fanfic.summary = metadata_container.find('blockquote').text
+        self._fanfic.raw_index_page = self._soup.prettify()
 
         paragraphs = metadata_container.find_all('p')
         for group in paragraphs[1].text.split(' - '):
@@ -111,7 +114,7 @@ class FanficAuthors(Site):
                 continue
             self.chapter_list.append({'link': link['href'], 'name': link.text})
 
-    def record_story_chapters(self):
+    def record_story_chapters(self) -> None:
         """Record the chapters of the fanfic"""
         # need to add /?bypass=1 to url
         for chapter in self.chapter_list:
@@ -132,7 +135,8 @@ class FanficAuthors(Site):
                 element.decompose()
 
             chapter_object = Chapter()
-            chapter_object.raw_body = story_container.prettify()
+            chapter_object.processed_body = story_container.prettify()
+            chapter_object.raw_body = self._soup.prettify()
             chapter_object.word_count = len(story.text.split())
             chapter_object.name = chapter['name']
             self._fanfic.add_chapter(chapter_object)

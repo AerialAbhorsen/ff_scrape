@@ -11,6 +11,15 @@ from ff_scrape.storybase import Story
 class Site(object):
     """Creates a logger using a variable formatter"""
 
+    _soup: BeautifulSoup
+    _fanfic_set: bool
+    _url: str
+    _fanfic: Story
+    _got_meta: bool
+    _chapter_sleep_time: int
+    _params: dict
+    _logging: logging.Logger
+
     def __init__(self, loglevel=None, **kwargs):
         defaults = {
             'logger_name': 'ff_scrape.site',
@@ -31,7 +40,7 @@ class Site(object):
 
         self.log_debug("Initialized")
 
-    def setup_site_logger(self, loglevel=None):
+    def setup_site_logger(self, loglevel=None) -> None:
         # TODO: fix logger
         # only add handlers if there is none attached to the logger
         # that only happens on first initialization of the class
@@ -74,7 +83,7 @@ class Site(object):
             ch.setFormatter(formatter)
             self._logger.addHandler(ch)
 
-    def get_story(self):
+    def get_story(self) -> None:
         """Perform the necessary steps to download the fanfic"""
 
         self.log_debug("Starting story")
@@ -87,7 +96,7 @@ class Site(object):
 
         self.log_info("Done processing story")
 
-    def _update_soup(self, url=None, lenient=True, cookie_jar=None):
+    def _update_soup(self, url=None, lenient=True, cookie_jar=None) -> None:
         if url is None:
             url = self._url
         page = requests.get(url)
@@ -98,7 +107,7 @@ class Site(object):
             # most notably the chapter list
             self._soup = BeautifulSoup(page.text, features="html5lib", cookies=cookie_jar)
 
-    def get_meta(self):
+    def get_meta(self) -> None:
         # get page
         self._update_soup(lenient=False)
 
@@ -114,29 +123,29 @@ class Site(object):
         self.record_story_metadata()
         self._got_meta = True
 
-    def check_story_exists(self):
+    def check_story_exists(self) -> bool:
         return True
 
-    def record_story_metadata(self):
+    def record_story_metadata(self) -> None:
         pass
 
-    def record_story_chapters(self):
+    def record_story_chapters(self) -> None:
         pass
 
     def set_domain(self):
         self._fanfic.domain = "Unknown"
 
-    def cleanup_custom_vars(self):
+    def cleanup_custom_vars(self) -> None:
         pass
 
     @property
-    def url(self):
+    def url(self) -> str:
         """Get or set the URL. Setting the URL will delete the current
            fanfic"""
         return self._url
 
     @url.setter
-    def url(self, value):
+    def url(self, value) -> None:
         """Allows for the URL to be changed to parse another fanfic"""
         if self._fanfic_set:
             del self._fanfic
@@ -149,11 +158,11 @@ class Site(object):
         self._url = value
 
     @property
-    def fanfic(self):
+    def fanfic(self) -> Story:
         return self._fanfic
 
     @fanfic.setter
-    def fanfic(self, fanfic):
+    def fanfic(self, fanfic) -> None:
         if isinstance(fanfic, Story):
             if self._fanfic_set:
                 del self._fanfic
@@ -161,10 +170,10 @@ class Site(object):
         else:
             raise ParameterError("Can not set fanfic attribute to a value that is not a Story")
 
-    def can_handle(self, url):
+    def can_handle(self, url) -> bool:
         return False
 
-    def correct_url(self, url):
+    def correct_url(self, url) -> str:
         return url
 
     def __enter__(self):
@@ -177,17 +186,17 @@ class Site(object):
         return '%s(url:%s)' % (self.__class__.__name__,
                                self._url or "''")
 
-    def log_debug(self, message):
+    def log_debug(self, message) -> None:
         self._logger.debug(message, extra={'url': self._url})
 
-    def log_info(self, message):
+    def log_info(self, message) -> None:
         self._logger.info(message, extra={'url': self._url})
 
-    def log_warn(self, message):
+    def log_warn(self, message) -> None:
         self._logger.warning(message, extra={'url': self._url})
 
-    def log_error(self, message):
+    def log_error(self, message) -> None:
         self._logger.error(message, extra={'url': self._url})
 
-    def log_crit(self, message):
+    def log_crit(self, message) -> None:
         self._logger.critical(message, extra={'url': self._url})

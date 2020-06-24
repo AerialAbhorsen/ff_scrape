@@ -70,6 +70,7 @@ class HPFanficArchive(Site):
     def record_story_metadata(self):
         """Record the metadata of the fanfic"""
         content_containers = self._soup.find_all(True, {'class': 'content'})
+        self._fanfic.raw_index_page = self._soup.prettify()
         # should be length 5
         # 0 => story tags
         # 1 => parent wrapper of story info
@@ -144,7 +145,8 @@ class HPFanficArchive(Site):
             story = self._soup.find(id='story')
 
             chapter_object = Chapter()
-            chapter_object.raw_body = story.prettify()
+            chapter_object.processed_body = story.prettify()
+            chapter_object.raw_body = self._soup.prettify()
             chapter_object.word_count = len(story.text.split())
             chapter_object.name = chapter['name']
             self._fanfic.add_chapter(chapter_object)

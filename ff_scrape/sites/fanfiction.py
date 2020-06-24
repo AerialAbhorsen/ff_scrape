@@ -15,23 +15,23 @@ class Fanfiction(Site):
         super().__init__(logger_name='ff_scrape.site.Fanfiction',
                          site_params=site_params)
 
-    def set_domain(self):
+    def set_domain(self) -> None:
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "Fanfiction.net"
 
-    def can_handle(self, url):
+    def can_handle(self, url) -> bool:
         if 'fanfiction.net/' in url:
             return True
         return False
 
-    def correct_url(self, url):
+    def correct_url(self, url) -> str:
         """Perform the necessary steps to correct the supplied _url so the parser can work with it"""
         # check if _url has "https://" or "http://" prefix
         if "http://" not in url:
             if "https://" not in url:
                 url = "http://%s" % url
         _url_split = url.split("/")
-        #correct for https
+        # correct for https
         if _url_split[0] == 'http:':
             _url_split[0] = "https:"
         # correct for mobile _url
@@ -58,14 +58,14 @@ class Fanfiction(Site):
         tmp = urljoin(url, ' ')[0:-2]
         return tmp
 
-    def check_story_exists(self):
+    def check_story_exists(self) -> bool:
         """Verify that the fanfic exists"""
         warning = self._soup.findAll("div", {"class": "panel_warning"})
         if len(warning) == 1:
             return False
         return True
 
-    def record_story_metadata(self):
+    def record_story_metadata(self) -> None:
         """Record the metadata of the fanfic"""
 
         # get section of code where the universe is listed
@@ -75,8 +75,8 @@ class Fanfiction(Site):
         for universe in universe_str.split(" + "):
             self._fanfic.add_universe(universe)
 
-
         top_profile = self._soup.find(id="profile_top")
+        self._fanfic.raw_index_page = self._soup.prettify()
 
         # record title and author
         self._fanfic.title = top_profile.b.string
@@ -125,7 +125,8 @@ class Fanfiction(Site):
         for person in non_pairing.split(', '):
             self._fanfic.add_character(standardize_character(person))
 
-    def record_story_chapters(self):
+
+    def record_story_chapters(self) -> None:
         """Record the chapters of the fanfic"""
         chapters = self._soup.find(id='chap_select').contents
 
@@ -141,7 +142,8 @@ class Fanfiction(Site):
             for content in story_tag.find_all(['p', 'hr']):
                 chapter_text += content.prettify()
                 chapter_count += len(content.text.split())
-            chapter_object.raw_body = chapter_text
+            chapter_object.processed_body = chapter_text
+            chapter_object.raw_body = self._soup.prettify()
             chapter_object.word_count = chapter_count
             chapter_object.name = chapter.text
             self._fanfic.add_chapter(chapter_object)

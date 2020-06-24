@@ -9,9 +9,15 @@ import requests
 import re
 import time
 from dateutil.parser import parse
+from requests.cookies import RequestsCookieJar
+
 
 class Ficwad(Site):
     """Provides the logic to parse fanfics from ficwad.com"""
+    _index_page: str
+    _web_domain: str
+    cookie_jar: RequestsCookieJar
+    chapter_list: [dict]
 
     def __init__(self, site_params={}):
         super().__init__(logger_name='ff_scrape.site.Ficwad',
@@ -26,23 +32,23 @@ class Ficwad(Site):
             else:
                 raise ParameterError("No credentials provided")
 
-    def login(self, user, password):
+    def login(self, user, password) -> None:
         login = requests.post('https://ficwad.com/account/login', files=(
             ('username', (None, user)),
             ('password', (None, password))
         ))
         self.cookie_jar = login.cookies
 
-    def set_domain(self):
+    def set_domain(self) -> None:
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "Ficwad.com"
 
-    def can_handle(self, url):
+    def can_handle(self, url) -> bool:
         if 'ficwad.com/' in url:
             return True
         return False
 
-    def correct_url(self, url):
+    def correct_url(self, url) -> str:
         """Perform the necessary steps to correct the supplied URL so the parser can work with it"""
         # check if url has "http://" prefix
         if "http://" not in url:
@@ -60,18 +66,18 @@ class Ficwad(Site):
         url = urljoin(url, ' ')[0:-2]
         return url
 
-    def check_story_exists(self):
+    def check_story_exists(self) -> bool:
         """Verify that the fanfic exists"""
         title_check = self.soup.find("title").string
         if title_check == u'FicWad: fresh-picked original and fan fiction':
             return False
         return True
 
-    def cleanup_custom_vars(self):
+    def cleanup_custom_vars(self) -> None:
         self.chapter_list = []
         self._index_page = None
 
-    def _get_story_chapter_list_non_index(self):
+    def _get_story_chapter_list_non_index(self) -> None:
         chap_list_select = self._soup.find_all(True, {'name': 'chapterlist'})
         if len(chap_list_select) == 0:
             # if there is no select with a chapter list inside, we are in a single chapter story
@@ -89,7 +95,7 @@ class Ficwad(Site):
                 else:
                     self.chapter_list.append({'name': page.text, 'link': page['value']})
 
-    def get_story_chapter_list(self):
+    def get_story_chapter_list(self) -> None:
         """Create a list of the chapters in the fanfic"""
         # check if it is the story index page
         story_text = self._soup.find(id='storytext')
@@ -114,7 +120,7 @@ class Ficwad(Site):
             # we are in a chapter, we need to generate the chapter list
             self._get_story_chapter_list_non_index()
 
-    def record_story_metadata(self):
+    def record_story_metadata(self) -> None:
         """Record the metadata of the fanfic"""
 
         # need to find an entry point first
@@ -123,6 +129,7 @@ class Ficwad(Site):
         # jump to the index page
         index_url = self._web_domain + self._index_page
         self._update_soup(url=index_url)
+        self._fanfic.raw_index_page = self._soup.prettify()
 
         # add author and title
         author_container = self._soup.find_all('span', {'class': 'author'})[0]
@@ -194,7 +201,7 @@ class Ficwad(Site):
         self._fanfic.published = parse(timestamps[0].attrs['title'])
         self._fanfic.updated = parse(timestamps[1].attrs['title'])
 
-    def record_story_chapters(self):
+    def record_story_chapters(self) -> None:
         """Record the chapters of the fanfic"""
         # get the chapters
         for chapter in self.chapter_list:
@@ -207,7 +214,8 @@ class Ficwad(Site):
             story = self._soup.find(id='storytext')
 
             chapter_object = Chapter()
-            chapter_object.raw_body = story.prettify()
+            chapter_object.processed_body = story.prettify()
+            chapter_object.raw_body = self._soup.prettify()
             chapter_object.word_count = len(story.text.split())
             chapter_object.name = chapter['name']
             self._fanfic.add_chapter(chapter_object)
