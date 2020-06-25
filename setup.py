@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'ff_scrape=ff_scrape.scraper:main'
+            'ff_scrape=ff_scrape.cli:main'
         ],
         'ff_scrape.sites': [
             'Fanfiction=ff_scrape.sites.fanfiction:Fanfiction',
@@ -22,9 +22,9 @@ setup(
             'FanficAuthors=ff_scrape.sites.fanficauthors:FanficAuthors',
             'Ficwad=ff_scrape.sites.ficwad:Ficwad'
         ],
-        # 'ff_scrape.formatters': [
-        #     'text=ff_scrape.formatters.text:Text'
-        # ],
+        'ff_scrape.formatters': [
+            'text=ff_scrape.formatters.text:Text'
+        ],
         # 'ff_scrape.recorders': [
         #
         # ]

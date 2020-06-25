@@ -1,6 +1,6 @@
 from ff_scrape.storybase import Chapter
 from ff_scrape.errors import URLError
-from ff_scrape.fanficsite import Site
+from ff_scrape.sites.base import Site
 from ff_scrape.standardization import *
 from urllib.parse import urljoin
 from datetime import datetime
@@ -124,7 +124,6 @@ class Fanfiction(Site):
         non_pairing = non_pairing.strip()
         for person in non_pairing.split(', '):
             self._fanfic.add_character(standardize_character(person))
-
 
     def record_story_chapters(self) -> None:
         """Record the chapters of the fanfic"""

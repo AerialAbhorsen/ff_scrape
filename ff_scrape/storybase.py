@@ -1,9 +1,5 @@
-from abc import ABC, abstractmethod
 from datetime import datetime
 from collections import deque
-from os import environ
-import logging
-from ff_scrape.errors import *
 
 class Chapter(object):
     __word_count: int

@@ -1,12 +1,17 @@
 from pkg_resources import iter_entry_points
 from os import environ
 from configparser import ConfigParser
-import argparse
 import logging
+from ff_scrape.sites.base import Site
+from ff_scrape.storybase import Story
+from ff_scrape.errors import ParameterError
+from ff_scrape.formatters.base import Formatter
 
 
 cfg = {}
-processors = {}
+processors: dict[str, Site] = {}
+formatters: dict[str, Formatter] = {}
+
 if 'SCRAPER_CONFIG' in environ:
     config = ConfigParser()
     config.read(environ.get('SCRAPER_CONFIG'))
@@ -20,6 +25,9 @@ for site_processor in iter_entry_points('ff_scrape.sites'):
         site_params = cfg[site_processor.name]
     processor_class = site_processor.load()
     processors[site_processor.name] = processor_class(site_params=site_params)
+
+for site_formatters in iter_entry_points('ff_scrape.formatters'):
+    formatters[site_formatters.name] = site_formatters.load()
 
 
 def _setup_logger(loglevel=None):
@@ -56,26 +64,23 @@ def _setup_logger(loglevel=None):
         logger.addHandler(ch)
     return logger
 
-def run_scrape(urls, loglevel=None):
+def ff_scrape(urls: [str], loglevel=None, formatter=None) -> [Story]:
     logger = _setup_logger(loglevel=loglevel)
+    stories: [Story] = []
+    if formatter is not None:
+        if formatter not in site_formatters:
+            raise ParameterError("Unknown formatter")
+
     for url in urls:
         for processor in processors:
             if processors[processor].can_handle(url):
                 processors[processor].url = url
                 processors[processor].get_story()
+                fanfic = processors[processor].fanfic
+                if formatter is not None:
+                    formatters[formatter].format(fanfic)
+                stories.append(fanfic)
                 break  # abort processor loop if a match was found
         else:
             logger.error("Unknown URL format for: " + url)
-
-
-def main():
-    parser = argparse.ArgumentParser(description='Scrape fanfiction websites to obtain the story text.')
-    parser.add_argument('--url', type=str, help='URL to obtain the details for', required=True, action='append')
-
-    args = parser.parse_args()
-    run_scrape(args.url)
-
-
-if __name__ == "__main__":
-    main()
-
+    return stories

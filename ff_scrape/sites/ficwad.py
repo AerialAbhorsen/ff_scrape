@@ -2,7 +2,7 @@
 fanfiction stories"""
 from ff_scrape.storybase import Chapter
 from ff_scrape.errors import URLError, StoryError, ParameterError
-from ff_scrape.fanficsite import Site
+from ff_scrape.sites.base import Site
 from ff_scrape.standardization import *
 from urllib.parse import urljoin, urlparse
 import requests
