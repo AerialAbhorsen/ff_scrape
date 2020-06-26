@@ -4,6 +4,7 @@ from ff_scrape.storybase import Story
 from ff_scrape.errors import URLError
 from testfixtures import ShouldRaise
 from bs4 import BeautifulSoup
+from os.path import dirname, join
 
 
 class FanfictionTests(unittest.TestCase):
@@ -13,6 +14,7 @@ class FanfictionTests(unittest.TestCase):
         url = "placeholder_url"
         self.fanfiction._url = url
         self.fanfiction._fanfic = Story(url)
+        self.dir = dirname(__file__)
 
     def test_domain(self):
         self.fanfiction.set_domain()
@@ -56,12 +58,15 @@ class FanfictionTests(unittest.TestCase):
                 self.fanfiction.correct_url(check[0])
 
     def test_check_exists(self):
-        page = open('data/missing_story.html', 'r')
+        file = join(self.dir, 'data', 'missing_story.html')
+        page = open(file, 'r')
         self.fanfiction._soup = BeautifulSoup(page.read(), features="html.parser")
         self.assertFalse(self.fanfiction.check_story_exists(), "Missing page shows as not existing")
         page.close()
 
-        page = open('data/good_story.html', 'r')
+        file = join(self.dir, 'data', 'good_story.html')
+        page = open(file, 'r')
+        self.fanfiction._soup = BeautifulSoup(page.read(), features="html5lib")
         self.fanfiction._soup = BeautifulSoup(page.read(), features="html.parser")
         self.assertTrue(self.fanfiction.check_story_exists(), "Good page shows as existing")
         page.close()
