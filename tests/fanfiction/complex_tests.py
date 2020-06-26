@@ -8,7 +8,9 @@ class FanfictionTests(unittest.TestCase):
 
     def setUp(self):
         self.fanfiction = Fanfiction()
-        self.fanfiction._fanfic = Story("placeholder_url")
+        url = "placeholder_url"
+        self.fanfiction._url = url
+        self.fanfiction._fanfic = Story(url)
 
     def test_metadata_story1(self):
         page = open('data/good_story.html', 'r')

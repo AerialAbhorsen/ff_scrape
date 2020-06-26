@@ -4,6 +4,8 @@ def standardize_rating(rating):
         return 'T'
     if rating == 'NC-17 - No One 17 and Under Admitted':
         return 'NC-17'
+    if rating == 'R - Restricted':
+        return 'R'
     return rating
 
 def standardize_status(status):
@@ -30,6 +32,8 @@ def standardize_warning(warning):
 
 def standardize_category(category):
     category = category.strip()
+    if category == 'Hogwarts House':
+        category = None
     return category
 
 # todo: add standardize pairing

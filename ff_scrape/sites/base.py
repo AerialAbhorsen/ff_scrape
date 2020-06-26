@@ -66,7 +66,6 @@ class Site(object):
                 loglevel = logging.CRITICAL
         if loglevel is None:
             loglevel = logging.INFO
-        self._logger = logging.getLogger('ff_scrape.site')
 
         if 'SCRAPER_LOG_FILE' in environ:
             handler = logging.FileHandler(environ.get("SCRAPER_LOG_FILE"))

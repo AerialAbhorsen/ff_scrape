@@ -10,7 +10,9 @@ class FanfictionTests(unittest.TestCase):
 
     def setUp(self):
         self.fanfiction = Fanfiction()
-        self.fanfiction._fanfic = Story("placeholder_url")
+        url = "placeholder_url"
+        self.fanfiction._url = url
+        self.fanfiction._fanfic = Story(url)
 
     def test_domain(self):
         self.fanfiction.set_domain()
@@ -40,9 +42,9 @@ class FanfictionTests(unittest.TestCase):
         ]
         bad_checks = [
             ["https://www.fanfiction.net/s/", "No Story ID given"],
-            ["https://www.fanfiction.net/s/1234/1/1/1", "Unknown url format"],
+            ["https://www.fanfiction.net/s/1234/1/1/1", "Unknown URL format"],
             ["https://www.fanfiction.net/s//1/1/1", "No Story ID given"],
-            ["https://www.fanfiction.net/", "Unknown url format"],
+            ["https://www.fanfiction.net/", "Unknown URL format"],
         ]
 
         for check in good_checks:

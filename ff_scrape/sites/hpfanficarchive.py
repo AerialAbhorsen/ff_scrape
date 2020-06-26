@@ -102,12 +102,17 @@ class HPFanficArchive(Site):
                     self._fanfic.updated = datetime.strptime(
                         item.next_sibling.next_sibling.next_sibling + "T00:00:00", pattern
                     )
+                elif parsed_key == 'completed':
+                    if item.next_sibling.strip() == 'Yes':
+                        self._fanfic.status = standardize_status("Complete")
             else:
                 # we have found a value for the current parsed_key
                 if parsed_key == 'summary':
                     summary_text += item.text
                 elif parsed_key == 'categories':
-                    self._fanfic.add_category(standardize_category(item.text))
+                    category = standardize_category(item.text)
+                    if category is not None:
+                        self._fanfic.add_category(category)
                 elif parsed_key == 'status':
                     self._fanfic.status = standardize_status(item.text)
                 elif parsed_key == 'characters':

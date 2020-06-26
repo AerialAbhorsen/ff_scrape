@@ -32,7 +32,7 @@ class Fanfiction(Site):
                 url = "http://%s" % url
         _url_split = url.split("/")
         if len(_url_split) < 5:
-            raise URLError('Unknown url format')
+            raise URLError('Unknown URL format')
         # correct for https
         if _url_split[0] == 'http:':
             _url_split[0] = "https:"
@@ -55,7 +55,7 @@ class Fanfiction(Site):
             _url_split[5] = '1'
             _url_split[6] = ''
         else:
-            raise URLError('Unknown url format')
+            raise URLError('Unknown URL format')
         url = '/'.join(_url_split)
         tmp = urljoin(url, ' ')[0:-2]
         return tmp
