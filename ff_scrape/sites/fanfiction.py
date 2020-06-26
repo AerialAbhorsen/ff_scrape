@@ -14,6 +14,7 @@ class Fanfiction(Site):
     def __init__(self, site_params={}):
         super().__init__(logger_name='ff_scrape.site.Fanfiction',
                          site_params=site_params)
+        self.chapter_list = []
 
     def set_domain(self) -> None:
         """Sets the domain of the fanfic to Fanfiction.net"""
@@ -23,6 +24,9 @@ class Fanfiction(Site):
         if 'fanfiction.net/' in url:
             return True
         return False
+
+    def cleanup_custom_vars(self):
+        self.chapter_list = []
 
     def correct_url(self, url: str) -> str:
         """Perform the necessary steps to correct the supplied _url so the parser can work with it"""
@@ -133,17 +137,21 @@ class Fanfiction(Site):
             person = standardize_character(person)
             if person is not None:
                 self._fanfic.add_character(standardize_character(person))
+        chap_select = self._soup.find(id='chap_select')
+        if chap_select is not None:
+            for entry in chap_select.contents:
+                self.chapter_list.append({'name': entry.text, 'link': entry.attrs['value']})
+        else:
+            self.chapter_list.append({'name': self._fanfic.title, 'link': '1'})
 
     def record_story_chapters(self) -> None:
         """Record the chapters of the fanfic"""
-        chapters = self._soup.find(id='chap_select').contents
-
         # get the chapters
-        for chapter in chapters:
+        for chapter in self.chapter_list:
             time.sleep(self._chapter_sleep_time)
             chapter_object = Chapter()
-            self.log_debug("Downloading chapter: " + chapter.attrs['value'])
-            self._update_soup(url=self._url[0:-1]+chapter['value'])
+            self.log_debug("Downloading chapter: " + chapter['link'])
+            self._update_soup(url=self._url[0:-1]+chapter['link'])
             chapter_text = ""
             chapter_count = 0
             story_tag = self._soup.find(id="storytextp")
@@ -153,5 +161,5 @@ class Fanfiction(Site):
             chapter_object.processed_body = chapter_text
             chapter_object.raw_body = self._soup.prettify()
             chapter_object.word_count = chapter_count
-            chapter_object.name = chapter.text
+            chapter_object.name = chapter['name']
             self._fanfic.add_chapter(chapter_object)

@@ -2,6 +2,7 @@ import unittest
 from ff_scrape.sites.fanfiction import Fanfiction
 from ff_scrape.storybase import Story
 from bs4 import BeautifulSoup
+from os.path import dirname, join
 
 
 class FanfictionTests(unittest.TestCase):
@@ -11,16 +12,18 @@ class FanfictionTests(unittest.TestCase):
         url = "placeholder_url"
         self.fanfiction._url = url
         self.fanfiction._fanfic = Story(url)
+        self.dir = dirname(__file__)
 
     def test_metadata_story1(self):
-        page = open('data/good_story.html', 'r')
-        self.fanfiction._soup = BeautifulSoup(page.read(), features="html.parser")
+        file = join(self.dir, 'data', 'good_story.html')
+        page = open(file, 'r')
+        self.fanfiction._soup = BeautifulSoup(page.read(), features="html5lib")
         page.close()
         self.fanfiction.record_story_metadata()
         fanfic = self.fanfiction._fanfic
 
         self.assertEqual(fanfic.universe, ['Naruto'], "Universe is correctly set")
-        self.assertEqual(len(fanfic.raw_index_page), 97586, 'Raw index page length correct')
+        self.assertEqual(len(fanfic.raw_index_page), 68474, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Naruto Guardian Of The Mist', 'Title is correct')
         self.assertEqual(fanfic.author, 'SSJ3 Kyuubi Gohan', 'Author is correct')
         self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/3058796/', 'Author URL is correct')
@@ -43,15 +46,32 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.updated.isoformat(), '2020-05-15T23:02:33', 'Published timestamp is correct')
         self.assertEqual(fanfic.published.isoformat(), '2012-09-08T19:10:27', 'Updated timestamp is correct')
 
+        chapter_list = [
+            {'link': '1', 'name': '1. Banishment'},
+            {'link': '2', 'name': "2. Naruto's Growth"},
+            {'link': '3', 'name': '3. Pain'},
+            {'link': '4', 'name': '4. Darkness'},
+            {'link': '5', 'name': '5. The Penultimate Battle'},
+            {'link': '6', 'name': '6. For Peace or Revenge'},
+            {'link': '7', 'name': '7. Burn Once More'},
+            {'link': '8', 'name': '8. Changes'},
+            {'link': '9', 'name': '9. Half-dozen'},
+            {'link': '10', 'name': '10. Intel'},
+            {'link': '11', 'name': '11. Blood versus water'},
+            {'link': '12', 'name': '12. Foes of tomorrow'}
+        ]
+        self.assertEqual(chapter_list, self.fanfiction.chapter_list, 'Chapter list is correct')
+
     def test_metadata_story2(self):
-        page = open('data/good_story2.html', 'r')
-        self.fanfiction._soup = BeautifulSoup(page.read(), features="html.parser")
+        file = join(self.dir, 'data', 'good_story2.html')
+        page = open(file, 'r')
+        self.fanfiction._soup = BeautifulSoup(page.read(), features="html5lib")
         page.close()
         self.fanfiction.record_story_metadata()
         fanfic = self.fanfiction._fanfic
 
         self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correctly set")
-        self.assertEqual(len(fanfic.raw_index_page), 55079, 'Raw index page length correct')
+        self.assertEqual(len(fanfic.raw_index_page), 55730, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Why We fight', 'Title is correct')
         self.assertEqual(fanfic.author, "W'rkncacnter", 'Author is correct')
         self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/111583/', 'Author URL is correct')
@@ -67,9 +87,22 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.published.isoformat(), '2004-04-23T22:51:44', 'Published timestamp is correct')
         self.assertEqual(fanfic.updated.isoformat(), '2005-02-06T01:17:33', 'Updated timestamp is correct')
 
+        chapter_list = [
+            {'link': '1', 'name': '1. Chapter 1'},
+            {'link': '2', 'name': "2. Chapter 2"},
+            {'link': '3', 'name': '3. Chapter 3'},
+            {'link': '4', 'name': '4. Chapter 4'},
+            {'link': '5', 'name': '5. Chapter 5'},
+            {'link': '6', 'name': '6. Chapter 6'},
+            {'link': '7', 'name': '7. Chapter 7'},
+            {'link': '8', 'name': '8. Chapter 8'}
+        ]
+        self.assertEqual(chapter_list, self.fanfiction.chapter_list, 'Chapter list is correct')
+
     def test_metadata_story3(self):
-        page = open('data/good_story3.html', 'r')
-        self.fanfiction._soup = BeautifulSoup(page.read(), features="html.parser")
+        file = join(self.dir, 'data', 'good_story3.html')
+        page = open(file, 'r')
+        self.fanfiction._soup = BeautifulSoup(page.read(), features="html5lib")
         page.close()
         self.fanfiction.record_story_metadata()
         fanfic = self.fanfiction._fanfic
@@ -77,7 +110,7 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(len(fanfic.universe), 2, "Universe length is correct")
         self.assertIn("Harry Potter", fanfic.universe, "First member is present")
         self.assertIn("Chronicles of Narnia", fanfic.universe, "Second member is present")
-        self.assertEqual(len(fanfic.raw_index_page), 53563, 'Raw index page length correct')
+        self.assertEqual(len(fanfic.raw_index_page), 53996, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Fifth King, Lost Queen', 'Title is correct')
         self.assertEqual(fanfic.author, "Pinion King", 'Author is correct')
         self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/1105550/', 'Author URL is correct')
@@ -94,6 +127,53 @@ class FanfictionTests(unittest.TestCase):
         self.assertIn("Romance", fanfic.genres, "Second member is present")
         self.assertEqual(fanfic.published.isoformat(), '2008-05-02T05:18:29', 'Published timestamp is correct')
         self.assertEqual(fanfic.updated.isoformat(), '2015-10-31T21:58:29', 'Updated timestamp is correct')
+
+        chapter_list = [
+            {'link': '1', 'name': '1. Chapter 1'},
+            {'link': '2', 'name': "2. Chapter 2"},
+            {'link': '3', 'name': '3. Chapter 3'},
+            {'link': '4', 'name': '4. Chapter 4'},
+            {'link': '5', 'name': '5. Chapter 5'},
+            {'link': '6', 'name': '6. Chapter 6'},
+            {'link': '7', 'name': '7. Chapter 7'},
+            {'link': '8', 'name': '8. Chapter 8'},
+            {'link': '9', 'name': '9. Chapter 9'},
+            {'link': '10', 'name': '10. Chapter 10'},
+            {'link': '11', 'name': '11. Chapter 11'},
+            {'link': '12', 'name': '12. Chapter 12'},
+            {'link': '13', 'name': '13. Chapter 13'}
+        ]
+        self.assertEqual(chapter_list, self.fanfiction.chapter_list, 'Chapter list is correct')
+
+    def test_metadata_story4(self):
+        file = join(self.dir, 'data', 'good_story4.html')
+        page = open(file, 'r')
+        self.fanfiction._soup = BeautifulSoup(page.read(), features="html5lib")
+        page.close()
+        self.fanfiction.record_story_metadata()
+        fanfic = self.fanfiction._fanfic
+
+        self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correct")
+        self.assertEqual(len(fanfic.raw_index_page), 66176, 'Raw index page length correct')
+        self.assertEqual(fanfic.title, "Harry Potter and the Unicorn's Curse", 'Title is correct')
+        self.assertEqual(fanfic.author, "Really Frozen Phoenix", 'Author is correct')
+        self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/801129/', 'Author URL is correct')
+        summary = "Itâ€™s the end of sixth year at Hogwarts for Harry Potter and he can safely say that itâ€™s been the most relaxed year despite the war with Lord Voldemort. Calm doesnâ€™t last long, however, and he knows that the storm is on itâ€™s way. HP/femBZ. AU."
+        self.assertEqual(fanfic.summary, summary, 'Summary is correct')
+        self.assertEqual(fanfic.rating, 'M', 'Rating is correct')
+        self.assertEqual(fanfic.status, 'WIP', 'Status is correct')
+        self.assertEqual(len(fanfic.pairings), 0, "There is no pairings")
+        self.assertEqual(len(fanfic.characters), 2, 'There are two characters')
+        self.assertIn('Harry P.', fanfic.characters, "First member present")
+        self.assertIn('Blaise Z.', fanfic.characters, "Second member present")
+        self.assertEqual(fanfic.genres, ['Adventure'], "Genre is correct")
+        self.assertEqual(fanfic.published.isoformat(), '2008-04-13T21:43:53', 'Published timestamp is correct')
+        self.assertEqual(fanfic.updated.isoformat(), '2008-04-13T21:43:53', 'Updated timestamp is correct')
+
+        chapter_list = [
+            {'link': '1', 'name': "Harry Potter and the Unicorn's Curse"}
+        ]
+        self.assertEqual(chapter_list, self.fanfiction.chapter_list, 'Chapter list is correct')
 
 
 if __name__ == '__main__':
