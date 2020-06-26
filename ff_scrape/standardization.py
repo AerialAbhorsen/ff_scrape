@@ -18,6 +18,8 @@ def standardize_genre(genre):
 
 def standardize_character(character):
     character = character.strip()
+    if character == '':
+        character = None
     # todo: enhance this
     return character
 

@@ -24,13 +24,13 @@ class FanficAuthors(Site):
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "fanficauthors.net"
 
-    def can_handle(self, url) -> bool:
+    def can_handle(self, url: str) -> bool:
         if 'fanficauthors.net/' in url:
             return True
         return False
 
     @Site.url.setter
-    def url(self, value) -> None:
+    def url(self, value: str) -> None:
         """Allows for the URL to be changed to parse another fanfic"""
         if self._fanfic_set:
             del self._fanfic
@@ -43,7 +43,7 @@ class FanficAuthors(Site):
         self._url = value
         self._url_obj = urlparse(value)
 
-    def correct_url(self, url) -> str:
+    def correct_url(self, url: str) -> str:
         """Perform the necessary steps to correct the supplied URL so the parser can work with it"""
         # check if url has "http://" or "https://" prefix
         if "http://" not in url and "https://" not in url:

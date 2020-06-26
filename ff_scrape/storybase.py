@@ -1,5 +1,5 @@
 from datetime import datetime
-from collections import deque
+from typing import List
 
 class Chapter(object):
     __word_count: int
@@ -53,30 +53,42 @@ class Story(object):
     _title: str
     _url: str
     _author_url: str
-    _chapters: deque[Chapter]
+    _chapters: List[Chapter]
     _domain: str
     _status: str
-    _universe: deque[str]
-    _categories: deque[str]
-    _genres: deque[str]
+    _universe: List[str]
+    _categories: List[str]
+    _genres: List[str]
     _published: datetime
     _updated: datetime
     _summary: str
     _rating: str
-    _pairings: deque[str]
-    _warnings: deque[str]
-    _characters: deque[str]
+    _pairings: List[str]
+    _warnings: List[str]
+    _characters: List[str]
     _raw_index_page: str
 
     def __init__(self, url, **kwargs):
         self._url = url
-        self._chapters = deque()
-        self._categories = deque()
-        self._genres = deque()
-        self._pairings = deque()
-        self._universe = deque()
-        self._warnings = deque()
-        self._characters = deque()
+
+        self._author = None
+        self._title = None
+        self._author_url = None
+        self._domain = None
+        self._status = None
+        self._published = None
+        self._updated = None
+        self._summary = None
+        self._rating = None
+        self._raw_index_page = None
+
+        self._chapters = []
+        self._categories = []
+        self._genres = []
+        self._pairings = []
+        self._universe = []
+        self._warnings = []
+        self._characters = []
 
     def __repr__(self):
         return '%s(url:%s)' % (self.__class__.__name__,
@@ -128,7 +140,7 @@ class Story(object):
     def status(self, status): self._status = status
 
     @property
-    def universe(self) -> deque: return self._universe
+    def universe(self) -> List[str]: return self._universe
 
     def add_universe(self, universe) -> None: self._universe.append(universe)
 
@@ -145,27 +157,27 @@ class Story(object):
     def rating(self, rating): self._rating = rating
 
     @property
-    def categories(self) -> deque: return self._categories
+    def categories(self) -> List[str]: return self._categories
 
     def add_category(self, category) -> None: self._categories.append(category)
 
     @property
-    def characters(self) -> deque: return self._characters
+    def characters(self) -> List[str]: return self._characters
 
     def add_character(self, character) -> None: self._characters.append(character)
 
     @property
-    def warnings(self) -> deque: return self._warnings
+    def warnings(self) -> List[str]: return self._warnings
 
     def add_warning(self, warning) -> None: self._warnings.append(warning)
 
     @property
-    def genres(self) -> deque: return self._genres
+    def genres(self) -> List[str]: return self._genres
 
     def add_genre(self, genre) -> None: self._genres.append(genre)
 
     @property
-    def pairings(self) -> deque: return self._pairings
+    def pairings(self) -> List[str]: return self._pairings
 
     def add_pairing(self, pairing) -> None: self._pairings.append(pairing)
 
@@ -177,7 +189,7 @@ class Story(object):
         return count
 
     @property
-    def chapters(self) -> deque: return self._chapters
+    def chapters(self) -> List[str]: return self._chapters
 
     def add_chapter(self, chapter) -> None: self._chapters.append(chapter)
 

@@ -32,7 +32,7 @@ class Ficwad(Site):
             else:
                 raise ParameterError("No credentials provided")
 
-    def login(self, user, password) -> None:
+    def login(self, user: str, password: str) -> None:
         login = requests.post('https://ficwad.com/account/login', files=(
             ('username', (None, user)),
             ('password', (None, password))
@@ -43,12 +43,12 @@ class Ficwad(Site):
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "Ficwad.com"
 
-    def can_handle(self, url) -> bool:
+    def can_handle(self, url: str) -> bool:
         if 'ficwad.com/' in url:
             return True
         return False
 
-    def correct_url(self, url) -> str:
+    def correct_url(self, url: str) -> str:
         """Perform the necessary steps to correct the supplied URL so the parser can work with it"""
         # check if url has "http://" prefix
         if "http://" not in url:

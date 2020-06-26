@@ -21,12 +21,12 @@ class HPFanficArchive(Site):
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "HPFanficArchive"
 
-    def can_handle(self, url):
+    def can_handle(self, url: str):
         if 'hpfanficarchive.com/' in url:
             return True
         return False
 
-    def correct_url(self, url):
+    def correct_url(self, url: str):
         """Perform the necessary steps to correct the supplied URL so the parser can work with it"""
         # check if url has "http://" prefix
         # check if url has "http://" prefix

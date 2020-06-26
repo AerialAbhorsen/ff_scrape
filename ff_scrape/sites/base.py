@@ -96,7 +96,7 @@ class Site(object):
 
         self.log_info("Done processing story")
 
-    def _update_soup(self, url=None, lenient=True, cookie_jar=None) -> None:
+    def _update_soup(self, url: str = None, lenient: bool = True, cookie_jar=None) -> None:
         if url is None:
             url = self._url
         page = requests.get(url)
@@ -145,7 +145,7 @@ class Site(object):
         return self._url
 
     @url.setter
-    def url(self, value) -> None:
+    def url(self, value: str) -> None:
         """Allows for the URL to be changed to parse another fanfic"""
         if self._fanfic_set:
             del self._fanfic
@@ -161,19 +161,15 @@ class Site(object):
     def fanfic(self) -> Story:
         return self._fanfic
 
-    @fanfic.setter
-    def fanfic(self, fanfic) -> None:
-        if isinstance(fanfic, Story):
-            if self._fanfic_set:
-                del self._fanfic
-            self._fanfic = fanfic
-        else:
-            raise ParameterError("Can not set fanfic attribute to a value that is not a Story")
+    def reset_fanfic(self) -> None:
+        if self._fanfic_set:
+            del self._fanfic
+        self._fanfic = Story()
 
-    def can_handle(self, url) -> bool:
+    def can_handle(self, url: str) -> bool:
         return False
 
-    def correct_url(self, url) -> str:
+    def correct_url(self, url: str) -> str:
         return url
 
     def __enter__(self):
@@ -186,17 +182,17 @@ class Site(object):
         return '%s(url:%s)' % (self.__class__.__name__,
                                self._url or "''")
 
-    def log_debug(self, message) -> None:
+    def log_debug(self, message: str) -> None:
         self._logger.debug(message, extra={'url': self._url})
 
-    def log_info(self, message) -> None:
+    def log_info(self, message: str) -> None:
         self._logger.info(message, extra={'url': self._url})
 
-    def log_warn(self, message) -> None:
+    def log_warn(self, message: str) -> None:
         self._logger.warning(message, extra={'url': self._url})
 
-    def log_error(self, message) -> None:
+    def log_error(self, message: str) -> None:
         self._logger.error(message, extra={'url': self._url})
 
-    def log_crit(self, message) -> None:
+    def log_crit(self, message: str) -> None:
         self._logger.critical(message, extra={'url': self._url})

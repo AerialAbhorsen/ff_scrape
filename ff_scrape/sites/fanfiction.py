@@ -19,18 +19,20 @@ class Fanfiction(Site):
         """Sets the domain of the fanfic to Fanfiction.net"""
         self._fanfic.domain = "Fanfiction.net"
 
-    def can_handle(self, url) -> bool:
+    def can_handle(self, url: str) -> bool:
         if 'fanfiction.net/' in url:
             return True
         return False
 
-    def correct_url(self, url) -> str:
+    def correct_url(self, url: str) -> str:
         """Perform the necessary steps to correct the supplied _url so the parser can work with it"""
         # check if _url has "https://" or "http://" prefix
         if "http://" not in url:
             if "https://" not in url:
                 url = "http://%s" % url
         _url_split = url.split("/")
+        if len(_url_split) < 5:
+            raise URLError('Unknown url format')
         # correct for https
         if _url_split[0] == 'http:':
             _url_split[0] = "https:"
@@ -69,9 +71,9 @@ class Fanfiction(Site):
         """Record the metadata of the fanfic"""
 
         # get section of code where the universe is listed
-        story_group, universe_tag = self._soup.find('div', {'id': 'pre_story_links'}).find_all('a', href=True)
+        universe_tags = self._soup.find('div', {'id': 'pre_story_links'}).find_all('a', href=True)
         # check if it is a crossover type
-        universe_str = universe_tag.string.replace(" Crossover", "")
+        universe_str = universe_tags[-1].string.replace(" Crossover", "")
         for universe in universe_str.split(" + "):
             self._fanfic.add_universe(universe)
 
@@ -81,31 +83,34 @@ class Fanfiction(Site):
         # record title and author
         self._fanfic.title = top_profile.b.string
         self._fanfic.author = top_profile.a.string
-        author_url = "http://fanfiction.net" + top_profile.a.attrs['href']
+        author_url = "https://www.fanfiction.net/" + top_profile.a.attrs['href']
         # need to remove author name from url in case author changes their name in the future
-        matching = re.match(r'(.*\d+)\/?.*', author_url)
-        self._fanfic.author_url = matching.group(1)
+        self._fanfic.author_url = urljoin(author_url, ' ').strip()
 
         # record summary
         self._fanfic.summary = top_profile.find('div', attrs={'class': 'xcontrast_txt'}).string
 
         # record published and updated timestamps
         times = top_profile.find_all(attrs={'data-xutime': True})
-        self._fanfic.published = datetime.fromtimestamp(int(times[0]['data-xutime']))
-        if len(times) == 1:
-            self._fanfic.updated = datetime.fromtimestamp(int(times[0]['data-xutime']))
-        elif len(times) == 2:
-            self._fanfic.updated = datetime.fromtimestamp(int(times[1]['data-xutime']))
+        timestamps = []
+        timestamps.append(datetime.fromtimestamp(int(times[0]['data-xutime'])))
+
+        if len(times) == 2:
+            timestamps.append(datetime.fromtimestamp(int(times[1]['data-xutime'])))
+        self._fanfic.published = min(timestamps)
+        self._fanfic.updated = max(timestamps)
 
         # record rating
         rating_tag = top_profile.find('a', {'target': 'rating'})
         rating_split = rating_tag.string.split(" ")
-        self._fanfic.rating = standardize_rating(rating_split[1])
+        self._fanfic.rating = standardize_rating(rating_split[-1])
 
         # the remaining attributes need to be positionally extracted from story meta
         metadata_tags = self._soup.find('span', {'class': 'xgray xcontrast_txt'})
         metadata = [s.strip() for s in metadata_tags.text.split('-')]
-        self._fanfic.add_genre(standardize_genre(metadata[2]))
+        genres = metadata[2].split('/')
+        for genre in genres:
+            self._fanfic.add_genre(standardize_genre(genre))
         if 'Complete' in metadata:
             self._fanfic.status = 'Complete'
         else:
@@ -118,12 +123,16 @@ class Fanfiction(Site):
             pairing = pairing.replace('[', '').replace(']', '')
             pairing_arr = pairing.split(', ')
             for person in pairing_arr:
-                self._fanfic.add_character(standardize_character(person))
+                person = standardize_character(person)
+                if person is not None:
+                    self._fanfic.add_character(standardize_character(person))
             self._fanfic.add_pairing(pairing_arr)
         non_pairing = pairing_match.sub('', people_str)
         non_pairing = non_pairing.strip()
         for person in non_pairing.split(', '):
-            self._fanfic.add_character(standardize_character(person))
+            person = standardize_character(person)
+            if person is not None:
+                self._fanfic.add_character(standardize_character(person))
 
     def record_story_chapters(self) -> None:
         """Record the chapters of the fanfic"""
