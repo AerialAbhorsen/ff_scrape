@@ -24,14 +24,14 @@ class FanfictionTests(unittest.TestCase):
         fanfic = self.fanfiction._fanfic
 
         self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correctly set")
-        self.assertEqual(len(fanfic.raw_index_page), 62525, 'Raw index page length correct')
+        self.assertEqual(len(fanfic.raw_index_page), 62125, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Enter the Silver Flame - Year 1: On Happy Ripples and Unexpected Meetings', 'Title is correct')
         self.assertEqual(fanfic.author, 'SamStone', 'Author is correct')
         self.assertEqual(fanfic.author_url, 'http://www.hpfanficarchive.com/stories/viewuser.php?uid=587', 'Author URL is correct')
         summary = "This story came to mind in the form of two questions: What would it have been like for Harry to have learned of magic before Hogwarts a different magic? What would it have been like for Harry if he had been in a different house? This story explores an alternate view of Harry’s life and one of three choices."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'NC-17', 'Rating is correct')
-        self.assertEqual(fanfic.status, 'Complete', 'Status is correct')
+        self.assertEqual(fanfic.status, 'Completed', 'Status is correct')
         self.assertEqual(len(fanfic.pairings), 3, "There is three pairing")
         self.assertEqual(len(fanfic.pairings[0]), 2, "Pairing has two members")
         self.assertIn('Harry', fanfic.pairings[0], "First member present 1")

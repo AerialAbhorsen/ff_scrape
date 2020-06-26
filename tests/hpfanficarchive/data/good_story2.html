@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><meta name='description' content='&lt;p&gt;A young Harry is taken in by a street gang and trained in their art. Now a new highly sought after contractor is spreading throughout both the wizarding and muggle world.&lt;/p&gt;'><title>The Mercenary of Hogwarts by DanteTheRaven</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><script language="javascript" type="text/javascript" src="includes/javascript.js"></script>
+<link rel="alternate" type="application/rss+xml" title="Harry Potter FanFic Archive RSS Feed" href="rss.php"><script language="javascript" type="text/javascript" src="tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+	<script language="javascript" type="text/javascript"><!--
+	tinyMCE.init({ 
+		theme: 'advanced',
+		height: '250',
+		language: 'en',
+		convert_urls: 'false',
+		mode: 'textareas',
+		extended_valid_elements: 'a[name|href|target|title]',
+		plugins: 'advhr,advimage,advlink,searchreplace,contextmenu,preview,fullscreen,paste',
+		theme_advanced_buttons1_add: 'fontsizeselect',
+		theme_advanced_buttons2_add: 'separator,pasteword,pastetext',
+		theme_advanced_buttons3_add_before: 'tablecontrols,separator',
+		theme_advanced_buttons3_add: 'advhr',
+		theme_advanced_toolbar_align: 'center',
+		theme_advanced_statusbar_location: 'bottom',
+		theme_advanced_path: 'false',
+		editor_deselector: 'mceNoEditor',
+
+		theme_advanced_resizing: true,
+		invalid_elements: 'script,object,applet,iframe'
+   });
+
+var tinyMCEmode = true;
+	function toogleEditorMode(id) {
+		var elm = document.getElementById(id);
+
+		if (tinyMCE.getInstanceById(id) == null)
+			tinyMCE.execCommand('mceAddControl', false, id);
+		else
+			tinyMCE.execCommand('mceRemoveControl', false, id);
+	}
+ --></script><style type="text/css">
+#columncontainer { margin: 1em auto; width: auto;}
+#browseblock, #memberblock { width: 100%; padding: 0; margin: 0; float: left; border: 0px solid transparent; }
+.column { float: left; width: 99%; }
+html>body .column { width: 100%; }
+.cleaner { clear: both; height: 1px; font-size: 1px; margin: 0; padding: 0; background: transparent; }
+#settingsform { margin: 0; padding: 0; border: none; }
+#settingsform FORM { width: 100%; margin: 0 10%; }
+#settingsform LABEL { float: left; display: block; width: 30%; text-align: right; padding-right: 10px; clear: left; }
+#settingsform DIV { margin: 1ex auto; clear: both;}
+#settingsform .fieldset SPAN { float: left; display: block; width: 30%; text-align: right; padding-right: 10px; clear: left;}
+#settingsform .fieldset LABEL { float: none; width: auto; display: inline; text-align: left; clear: none; }
+#settingsform { float: left; margin: 1ex 10%; }
+#settingsform .tinytoggle { text-align: center; }
+#settingsform .tinytoggle LABEL { float: none; display: inline; width: auto; text-align: center; padding: 0; clear: none; }
+#settingsform #submitdiv { text-align: center; width: 100%;clear: both; height: 3em; }
+#settingsform #submitdiv #submit { position: absolute; z-index: 10001; margin: 1em; }
+a.pophelp{
+    position: relative; /* this is the key*/
+    vertical-align: super;
+}
+
+a.pophelp:hover{z-index:100; border: none; text-decoration: none;}
+
+a.pophelp span{display: none; position: absolute; top: -25em; left: 20em; }
+
+a.pophelp:hover span{ /*the span will display just on :hover state*/
+    display:block;
+    position: absolute;
+    top: -3em; left: 8em; width: 225px;
+    border:1px solid #000;
+    background-color:#CCC; color:#000;
+    text-decoration: none;
+    text-align: left;
+    padding: 5px;
+    font-weight: normal;
+    visibility: visible;
+}
+.required { color: red; }
+.shim {
+	position: absolute;
+	display: none;
+	height: 0;
+	width:0;
+	margin: 0;
+	padding: 0;
+	z-index: 100;
+}
+
+.ajaxOptList {
+	background: #CCC;
+	border: 1px solid #000;
+	margin: 0;
+	position: absolute;
+	padding: 0;
+	z-index: 1000;
+	text-align: left;
+}
+.ajaxListOptOver {
+	padding: 4px;
+	background: #CCC;
+	margin: 0;
+}
+.ajaxListOpt {
+	background: #EEE;
+	padding: 4px;
+	margin: 0;
+}
+.multiSelect {
+	width: 300px;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href='skins/HPFFA Light/style.css'></head>
+<style type="text/css">
+<!--
+.yes {
+	width: 700px;
+	margin: 20px;
+	padding: 15px;
+	background: #CF9;
+	border: 1px solid #9C3;
+}
+.no {
+	width: 700px;
+	margin: 0px;
+	padding: 8px;
+	background: #FCC;
+	border: 2px solid #F66;
+}
+#tester {
+	display:none;
+}
+-->
+</style>
+
+
+<body onload="load_settings()">
+<a name="top" id="top"></a>
+
+<!-- start big container -->
+<div id="container">
+
+<!-- start header -->
+<div id="header">
+<div id="sitename">Harry Potter FanFic Archive</div>
+
+<br>
+
+<center>
+
+<table border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#99999">
+<tr>
+<td><div align="center">
+
+<!-- <a href="https://freebitco.in/?r=72815"><img src="http://www.hpfanficarchive.com/stories/images/fbc.png" border="0"></a> -->
+
+<div align="center">
+<h2><a href="https://goo.gl/s7sbYx" target="_blank">Help support HPFFA - Donate today!<br />
+Any amount is appreciated!</a></h2>
+</div>
+
+</div></td>
+</tr>
+</table>
+
+</center>
+
+<br><br>
+
+</div>
+
+<!-- menus -->
+<div id="menu">
+<ul id="menulist">
+<li><a href="index.php" title="Home">Home</a></li>
+<li><a href="user.php?action=register" title="Register">Register</a></li> 
+<li><a href="user.php?action=login" title="Login">Login</a></li>
+<li></li>
+<li></li> 
+<li><a href="viewpage.php?page=rules" title="Rules">Rules</a></li>   
+<li><a href="viewpage.php?page=tos" title="Terms of Service">Terms of Service</a></li>   
+<li><a href="contact.php" title="Contact Us">Contact Us</a></li>   
+<li><a href="viewpage.php?page=help" title="Help">Help</a></li>
+<li></li> 
+</ul>
+</div>
+
+<div id="menu">
+<ul id="menulist">
+<li><a href="browse.php?type=recent" title="Most Recent">Most Recent</a></li> 
+<li><a href="authors.php?list=authors" title="Authors">Authors</a></li>
+<li><a href="browse.php?type=categories" title="Categories">Categories</a></li>
+<li><a href="browse.php?type=titles" title="Titles">Titles</a></li> 
+<li><a href="browse.php?type=series" title="Series">Series</a></li> 
+<li><a href="browse.php?type=challenges" title="Challenges">Challenges</a></li>
+<li><a href="browse.php?type=recommendations" title="Recommendations">Recommendations</a></li>
+<li><a href="toplists.php" title="Top Tens">Top Tens</a></li>  
+<li><a href="search.php" title="Search">Search</a></li> 
+</ul>
+</div>
+
+<!-- end menus -->
+<!-- end header -->
+
+<!-- start main layout -->
+<div id="mainpage">
+<div id="pagetitle"> <!-- TITLE START --><a href="viewstory.php?sid=471">The Mercenary of Hogwarts</a><!-- TITLE END --> by <!-- AUTHOR START --><a href="viewuser.php?uid=1581">DanteTheRaven</a><!-- AUTHOR END --> </div>
+<div id="sort"> [<a href="reviews.php?type=ST&amp;item=471">Reviews</a> - <a href="reviews.php?type=ST&amp;item=471">7</a>]  <a href="viewstory.php?action=printable&amp;textsize=0&amp;sid=471&amp;chapter=all" target="_blank"><img src='images/print.gif' border='0' alt='Printer'></a></div>
+
+<br>
+
+<div class="block">
+<div class="title">Story Tags</div>
+<div class="content"> Be the first to add a tag to this story </div>
+</div>
+
+<div class="block">
+<div class="title">Story Information</div>
+<div class="content">
+
+<div class="jumpmenu"></div>
+<div class="content"><span class="label">Summary: </span><!-- SUMMARY START --><p>A young Harry is taken in by a street gang and trained in their art. Now a new highly sought after contractor is spreading throughout both the wizarding and muggle world.</p><!-- SUMMARY END --><br />
+<span class="label">Rated:</span> R - Restricted<br />
+<span class="label">Categories:</span> <a href='browse.php?type=categories&amp;catid=49'>Drama</a>, <a href='browse.php?type=categories&amp;catid=111'>Dark or Evil</a> > <a href='browse.php?type=categories&amp;catid=112'>Dark Fic/Character</a>, <a href='browse.php?type=categories&amp;catid=131'>Hogwarts House</a> > <a href='browse.php?type=categories&amp;catid=134'>Main character at Ravenclaw</a><br />
+<span class="label">Characters: </span> <a href='browse.php?type=characters&amp;charid=64'>Daphne Greengrass</a>, <a href='browse.php?type=characters&amp;charid=12'>Harry James Potter</a>, <a href='browse.php?type=characters&amp;charid=23'>Nymphadora Tonks</a><br />
+<span class='label'>Status: </span> <a href='browse.php?type=class&amp;type_id=3&amp;classid=68'>WIP (Work in progress)</a><br /><span class='label'>Genres: </span> <a href='browse.php?type=class&amp;type_id=1&amp;classid=48'>Adventure/Action</a>, <a href='browse.php?type=class&amp;type_id=1&amp;classid=8'>AU</a>, <a href='browse.php?type=class&amp;type_id=1&amp;classid=42'>Dark</a>, <a href='browse.php?type=class&amp;type_id=1&amp;classid=10'>Drama</a>, <a href='browse.php?type=class&amp;type_id=1&amp;classid=59'>Suspense</a><br /><span class='label'>Pairings: </span> <a href='browse.php?type=class&amp;type_id=4&amp;classid=134'>Harry/Tonks</a><br /><span class='label'>Warnings: </span> <a href='browse.php?type=class&amp;type_id=2&amp;classid=62'>Adult Themes</a>, <a href='browse.php?type=class&amp;type_id=2&amp;classid=25'>Strong Violence</a><br />
+<span class="label">Challenges:</span> None<br /> <span class="label">Series:</span> None<br />
+<span class="label">Chapters: </span> 3 <span class="label">Completed:</span> No <br /> 
+<span class="label">Word count:</span> <!-- WORDCOUNT START -->12,184<!-- WORDCOUNT END --> <span class="label">Read:</span> 16,621<br />
+<span class="label"> Published: </span><!-- PUBLISHED START -->January 13, 2011<!-- PUBLISHED END --> <span class="label">Updated:</span> <!-- UPDATED START -->June 24, 2012<!-- UPDATED END --> </div>
+<div style='text-align: center;'>  <br></div>
+
+</div>
+</div>
+
+<div class="block">
+<div class="title">Story Notes</div>
+<div class="content">
+
+
+</div>
+</div>
+
+<div class="block">
+<div class="title">Story Chapters</div>
+<div class="content">
+      <p><b>1. <a href="viewstory.php?sid=471&amp;chapter=1">Prologue: Rescue from the Infection</a> </b>by <a href='viewuser.php?uid=1581'>DanteTheRaven</a> [<a href="reviews.php?type=ST&amp;item=471&amp;chapid=4613">Reviews</a> - <a href="reviews.php?type=ST&amp;item=471&amp;chapid=4613">2</a>]  (2,938 words)<br />
+	<p><em>Based on the concept by Tellemicus Sundance</em></p>
+<p><strong>Disclaimer: I don't own Harry Potter. If I said I did would you believe me? Special for this chapter, I also don't own the Reaper Virus or the movie Doomsday</strong></p>
+<p><strong>A/n: This a fic based on a prompt by Tellemicus and written with his permission. This first chapter is just a prologue and the next chapter will most likely skip a few years. Pairings are undecided but will most likely be a Harry/Tonks. Although I may throw a monkey wrench in it&hellip;.</strong></p>
+<p><strong>a/n 2: This chapter contains hints of the movie Doomsday. Just the virus itself is alluded to, in this version the outbreak was contained in the original outbreak location by a large wall surrounding the city and it didn't spread any farther. Note that this is not a crossover, the crossover is only apparent insofar as I use the Reaper virus. Just the virus is an important part of some backstory.</strong></p></p>
+      <p><b>2. <a href="viewstory.php?sid=471&amp;chapter=2">Abysmal Beginnings to the Year</a> </b>by <a href='viewuser.php?uid=1581'>DanteTheRaven</a> [<a href="reviews.php?type=ST&amp;item=471&amp;chapid=4661">Reviews</a> - <a href="reviews.php?type=ST&amp;item=471&amp;chapid=4661">1</a>]  (5,887 words)<br />
+	<p></p>
+<p><strong>A/n: Special thanks to </strong><a href="http://www.fanfiction.net/u/696448/Tellemicus_Sundance" target="user">Tellemicus Sundance</a> <strong>for his help with this chapter as well as beta-ing this for me. For those not aware: the ending of the prologue changed significantly from when I first posted it. I will not make a habit of this, but I felt it needed to be changed.</strong></p>
+<p><strong>So I present to you Chapter 1 of MoH&hellip;.</strong></p></p>
+      <p><b>3. <a href="viewstory.php?sid=471&amp;chapter=3">Of Poisoning and Hogwarts</a> </b>by <a href='viewuser.php?uid=1581'>DanteTheRaven</a> [<a href="reviews.php?type=ST&amp;item=471&amp;chapid=5722">Reviews</a> - <a href="reviews.php?type=ST&amp;item=471&amp;chapid=5722">4</a>]  (3,359 words)<br />
+	<p></p>
+<p><strong>Chapter 2: Of Poisoning and Hogwarts</strong></p>
+<p><strong>A/n: I'm so sorry that this took so long, but a big case of writers block hit me, in fact I had about half of this written for a long time but wasn't able to continue it. But I'm out of classes for the summer and guilt hit me, especially for this chapter since I promised several people that it was going to get done and it never did. Well now it is. Enjoy Chapter 2 of Mercenary</strong></p>
+<p><strong>A/n: Special thanks to <em>Tellemicus Sundance </em>for both beta-ing this and giving me great ideas and giving me the original prompt.</strong></p>
+<p><strong>Disclaimer: I don't own Harry Potter, nor do I make any claims that say I do so. Any ideas that are unique are purely my own.</strong></p></p>
+</div>
+</div>
+
+
+<div id="pagelinks"><div class="jumpmenu"></div></div>
+
+
+<!-- end main layout -->
+</div>
+
+<!-- start footer-->
+<div id="footer">
+
+<!-- footer text from admin panel -->
+<p><table border="0" width="65%" align="center">
+<tbody>
+<tr>
+<td>
+<div>
+<p><strong>Skin by <a href="http://www.made-by-kali.com">Kali</a><br />© 2007-2017 HPFanficArchive.Com</strong><br /> <strong>Powered by <a href="http://www.efiction.org" target="_blank">eFiction</a> Automated Archive Software</strong><br /> <strong><a href="http://www.the-butterfly.de" target="_blank"></a></strong></p>
+</div>
+<div>
+<p align="justify">This is an unofficial fan site and is not connected or endorsed by J.K. Rowling or Warner Bros. Harry Potter and its characters are property of JK Rowling in association with Warner Brothers. All submitted "FanFic" stories remain the property of their authors and must not be copied in any form without their consent.</p>
+<p align="justify">The views, activities, and lifestyles depicted in these stories in no way reflects the opinion, activities, or lifestyle of the site owner. We are not responsible for any of the adult content found in this archive. By entering this site you are stating that you are of legal age to view and enjoy adult material in your area. If you are underage or if adult material offends you, please leave now.</p>
+</div>
+</td>
+</tr>
+</tbody>
+</table></p>
+<P><p><a href="http://bad-behavior.ioerror.us/">Bad Behaviour</a> has blocked <strong>3929</strong> access attempts in the last 7 days.</p></P>
+
+<!-- footer links -->
+
+<!-- end big container -->
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19030000-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

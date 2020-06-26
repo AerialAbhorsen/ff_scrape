@@ -61,7 +61,7 @@ class FanficAuthors(Site):
     def check_story_exists(self) -> bool:
         """Verify that the fanfic exists"""
         title = self._soup.find('title')
-        if title.contents == 'Not Found':
+        if title.string == 'Not Found':
             self.log_warn("Story doesn't exist.")
             return False
         return True
@@ -76,13 +76,13 @@ class FanficAuthors(Site):
         # get title and author from top center
         header = self._soup.find_all(True, {'class': 'page-header'})[0]
         header_objs = header.find_all(True, {'class': 'text-center'})
-        self._fanfic.author = header_objs[1].text
+        self._fanfic.author = header_objs[1].text.replace('By ', '')
         self._fanfic.title = header_objs[0].text
         self._fanfic.author_url = self._url_obj.scheme + "://" + self._url_obj.netloc
 
         # get metadata info from story summary div
         metadata_container = self._soup.find_all(True, {'class': 'well'})[0]
-        self._fanfic.summary = metadata_container.find('blockquote').text
+        self._fanfic.summary = metadata_container.find('blockquote').text.strip()
         self._fanfic.raw_index_page = self._soup.prettify()
 
         paragraphs = metadata_container.find_all('p')
@@ -93,15 +93,18 @@ class FanficAuthors(Site):
             elif pair[0].lower() == 'rating':
                 self._fanfic.rating = standardize_rating(pair[1])
             elif pair[0].lower() == 'genre':
-                self._fanfic.add_genre(standardize_genre(pair[1]))
+                genres = pair[1].split(',')
+                for genre in genres:
+                    self._fanfic.add_genre(standardize_genre(genre))
 
         # record the updated and uploaded times to attempt to identify published and updated dates
         updated_regex = re.compile("updated|uploaded on", re.IGNORECASE)
         updated_texts = self._soup.find_all(text=updated_regex)
 
         dates = []
+        updated_date_regex = re.compile('on:? ')
         for date_block in updated_texts:
-            date_string = date_block.split('on ')[-1]
+            date_string = updated_date_regex.split(date_block)[-1]
             dates.append(parse(date_string))
 
         self._fanfic.published = min(dates)
@@ -111,6 +114,8 @@ class FanficAuthors(Site):
         links = container.find_all('a')
         for link in links:
             if link.text in ['Epub', 'lit', 'mobi', 'pdf', 'txt']:
+                continue
+            if '/reviews/' in link['href']:
                 continue
             self.chapter_list.append({'link': link['href'], 'name': link.text})
 
