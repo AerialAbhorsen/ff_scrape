@@ -8,6 +8,8 @@ def standardize_rating(rating):
         return 'NC-17'
     elif rating == 'R - Restricted':
         return 'R'
+    elif rating == 'Mature':
+        return 'M'
 
     return rating
 
@@ -17,6 +19,8 @@ def standardize_status(status):
         return 'WIP'
     elif status == 'Complete':
         status = 'Completed'
+    elif status == "Updated":
+        status = "WIP"
     return status
 
 def standardize_genre(genre):
@@ -33,6 +37,10 @@ def standardize_character(character):
 def standardize_warning(warning):
     warning = warning.strip()
     warning = warning.replace(' / ', '/')
+    if warning == 'No Archive Warnings Apply':
+        warning = None
+    if warning == 'Creator Chose Not To Use Archive Warnings':
+        warning = None
     return warning
 
 def standardize_category(category):
@@ -40,5 +48,11 @@ def standardize_category(category):
     if category == 'Hogwarts House':
         category = None
     return category
+
+def standardize_universe(universe):
+    universe = universe.strip()
+    if universe == 'Harry Potter - J. K. Rowling':
+        universe = 'Harry Potter'
+    return universe
 
 # todo: add standardize pairing

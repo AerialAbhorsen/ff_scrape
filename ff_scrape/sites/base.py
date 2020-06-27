@@ -163,7 +163,7 @@ class Site(object):
     def reset_fanfic(self) -> None:
         if self._fanfic_set:
             del self._fanfic
-        self._fanfic = Story()
+        self._fanfic = Story(self._url)
 
     def can_handle(self, url: str) -> bool:
         return False
