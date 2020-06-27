@@ -86,10 +86,11 @@ class Fanfiction(Site):
 
         # record title and author
         self._fanfic.title = top_profile.b.string
-        self._fanfic.author = top_profile.a.string
+        author = top_profile.a.string
         author_url = "https://www.fanfiction.net/" + top_profile.a.attrs['href']
         # need to remove author name from url in case author changes their name in the future
-        self._fanfic.author_url = urljoin(author_url, ' ').strip()
+        author_url = urljoin(author_url, ' ').strip()
+        self._fanfic.add_author(author, author_url)
 
         # record summary
         self._fanfic.summary = top_profile.find('div', attrs={'class': 'xcontrast_txt'}).string

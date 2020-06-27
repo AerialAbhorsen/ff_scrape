@@ -29,8 +29,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, [], "Universe is correctly set")
         self.assertEqual(len(fanfic.raw_index_page), 8886, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'A Matter of Perspective', 'Title is correct')
-        self.assertEqual(fanfic.author, 'Clell65619', 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'https://deluded-musings.fanficauthors.net', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, 'Clell65619', 'Author is correct')
+        self.assertEqual(authors[0].url, 'https://deluded-musings.fanficauthors.net', 'Author URL is correct')
         summary = "One of the Magical World's most powerful creations is the Mirror of Erised. Â But that isn't the only magical mirror in the world."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'E', 'Rating is correct')
@@ -61,8 +63,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, [], "Universe is correctly set")
         self.assertEqual(len(fanfic.raw_index_page), 14478, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Hope', 'Title is correct')
-        self.assertEqual(fanfic.author, "Jeconais", 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'https://jeconais.fanficauthors.net', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, 'Jeconais', 'Author is correct')
+        self.assertEqual(authors[0].url, 'https://jeconais.fanficauthors.net', 'Author URL is correct')
         summary = "A man who is lost in his own country.Â  A girl who needs her mate to survive.Â  A tale of Quidditch and romance, of anger and betrayal, of friendship and enmity.Â  A story of the power of hope."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'T', 'Rating is correct')

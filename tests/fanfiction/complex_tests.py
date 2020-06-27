@@ -25,8 +25,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, ['Naruto'], "Universe is correctly set")
         self.assertEqual(len(fanfic.raw_index_page), 68474, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Naruto Guardian Of The Mist', 'Title is correct')
-        self.assertEqual(fanfic.author, 'SSJ3 Kyuubi Gohan', 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/3058796/', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, 'SSJ3 Kyuubi Gohan', 'Author is correct')
+        self.assertEqual(authors[0].url, 'https://www.fanfiction.net/u/3058796/', 'Author URL is correct')
         summary = "Banished as soon as Tsunade is brought back to The Leaf, Naruto is at a loss of what to do. However with Kakashi testing his affinities, Naruto finds he has more power than he ever thought. Watch Naruto's journey as he learns about himself and becomes The Guardian Of The Mist. Ice, lava and boil release Naruto and maybe wood later on. Semi-dark, grey smart, and strong Naruto. Harem"
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'M', 'Rating is correct')
@@ -73,8 +75,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correctly set")
         self.assertEqual(len(fanfic.raw_index_page), 55730, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Why We fight', 'Title is correct')
-        self.assertEqual(fanfic.author, "W'rkncacnter", 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/111583/', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, "W'rkncacnter", 'Author is correct')
+        self.assertEqual(authors[0].url, 'https://www.fanfiction.net/u/111583/', 'Author URL is correct')
         summary = "Voldemort Waited two years to attack the Potter's.  Harry has two sister who are twins, the world thinks it was Sarah.  The World is Wrong.  HarryGinny, but only later on."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'T', 'Rating is correct')
@@ -112,8 +116,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertIn("Chronicles of Narnia", fanfic.universe, "Second member is present")
         self.assertEqual(len(fanfic.raw_index_page), 53996, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Fifth King, Lost Queen', 'Title is correct')
-        self.assertEqual(fanfic.author, "Pinion King", 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/1105550/', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, "Pinion King", 'Author is correct')
+        self.assertEqual(authors[0].url, 'https://www.fanfiction.net/u/1105550/', 'Author URL is correct')
         summary = "The cost of victory over Voldemort was his death. Now Harry starts a new adventure, this one in the land of Narnia where he works with the Pevensie's against a new threat, there is evil forming on the horizon. But first the lost queen must return."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'T', 'Rating is correct')
@@ -156,8 +162,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correct")
         self.assertEqual(len(fanfic.raw_index_page), 66176, 'Raw index page length correct')
         self.assertEqual(fanfic.title, "Harry Potter and the Unicorn's Curse", 'Title is correct')
-        self.assertEqual(fanfic.author, "Really Frozen Phoenix", 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'https://www.fanfiction.net/u/801129/', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, "Really Frozen Phoenix", 'Author is correct')
+        self.assertEqual(authors[0].url, 'https://www.fanfiction.net/u/801129/', 'Author URL is correct')
         summary = "Itâ€™s the end of sixth year at Hogwarts for Harry Potter and he can safely say that itâ€™s been the most relaxed year despite the war with Lord Voldemort. Calm doesnâ€™t last long, however, and he knows that the storm is on itâ€™s way. HP/femBZ. AU."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'M', 'Rating is correct')

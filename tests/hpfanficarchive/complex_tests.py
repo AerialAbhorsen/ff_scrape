@@ -26,8 +26,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correctly set")
         self.assertEqual(len(fanfic.raw_index_page), 62125, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'Enter the Silver Flame - Year 1: On Happy Ripples and Unexpected Meetings', 'Title is correct')
-        self.assertEqual(fanfic.author, 'SamStone', 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'http://www.hpfanficarchive.com/stories/viewuser.php?uid=587', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, "SamStone", 'Author is correct')
+        self.assertEqual(authors[0].url, 'http://www.hpfanficarchive.com/stories/viewuser.php?uid=587', 'Author URL is correct')
         summary = "This story came to mind in the form of two questions: What would it have been like for Harry to have learned of magic before Hogwarts a different magic? What would it have been like for Harry if he had been in a different house? This story explores an alternate view of Harry’s life and one of three choices."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'NC-17', 'Rating is correct')
@@ -170,8 +172,10 @@ class FanfictionTests(unittest.TestCase):
         self.assertEqual(fanfic.universe, ['Harry Potter'], "Universe is correctly set")
         self.assertEqual(len(fanfic.raw_index_page), 19102, 'Raw index page length correct')
         self.assertEqual(fanfic.title, 'The Mercenary of Hogwarts', 'Title is correct')
-        self.assertEqual(fanfic.author, "DanteTheRaven", 'Author is correct')
-        self.assertEqual(fanfic.author_url, 'http://www.hpfanficarchive.com/stories/viewuser.php?uid=1581', 'Author URL is correct')
+        authors = fanfic.authors
+        self.assertEqual(len(authors), 1, 'Length of authors is correct')
+        self.assertEqual(authors[0].name, "DanteTheRaven", 'Author is correct')
+        self.assertEqual(authors[0].url, 'http://www.hpfanficarchive.com/stories/viewuser.php?uid=1581', 'Author URL is correct')
         summary = "A young Harry is taken in by a street gang and trained in their art. Now a new highly sought after contractor is spreading throughout both the wizarding and muggle world."
         self.assertEqual(fanfic.summary, summary, 'Summary is correct')
         self.assertEqual(fanfic.rating, 'R', 'Rating is correct')

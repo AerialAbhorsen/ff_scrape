@@ -131,8 +131,9 @@ class HPFanficArchive(Site):
         title_container = self._soup.find(id='pagetitle')
         title_links = title_container.find_all('a')
         self._fanfic.title = title_links[0].text
-        self._fanfic.author = title_links[1].text
-        self._fanfic.author_url = urljoin(self._url, title_links[1].attrs['href'])
+        author = title_links[1].text
+        author_url = urljoin(self._url, title_links[1].attrs['href'])
+        self._fanfic.add_author(author, author_url)
 
         # set universe to hard coded value due to this being a HP only site
         self._fanfic.add_universe("Harry Potter")

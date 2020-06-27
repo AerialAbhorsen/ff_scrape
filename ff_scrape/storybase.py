@@ -47,12 +47,25 @@ class Chapter(object):
         self.__name = name
 
 
+class Author(object):
+    __name: str
+    __url: str
+
+    def __init__(self, name: str, url: str):
+        self.__url = url
+        self.__name = name
+
+    @property
+    def name(self) -> str: return self.__name
+
+    @property
+    def url(self) -> str: return self.__url
+
 class Story(object):
 
-    _author: str
+    _authors: List[Author]
     _title: str
     _url: str
-    _author_url: str
     _chapters: List[Chapter]
     _domain: str
     _status: str
@@ -71,9 +84,7 @@ class Story(object):
     def __init__(self, url, **kwargs):
         self._url = url
 
-        self._author = None
         self._title = None
-        self._author_url = None
         self._domain = None
         self._status = None
         self._published = None
@@ -89,6 +100,7 @@ class Story(object):
         self._universe = []
         self._warnings = []
         self._characters = []
+        self._authors = []
 
     def __repr__(self):
         return '%s(url:%s)' % (self.__class__.__name__,
@@ -104,22 +116,15 @@ class Story(object):
     def domain(self, domain) -> None: self._domain = domain
 
     @property
-    def author(self) -> str: return self._author
+    def authors(self) -> List[Author]: return self._authors
 
-    @author.setter
-    def author(self, author) -> None: self._author = author
+    def add_author(self, name: str, url: str) -> None: self._authors.append(Author(name, url))
 
     @property
     def title(self) -> str: return self._title
 
     @title.setter
     def title(self, title): self._title = title
-
-    @property
-    def author_url(self) -> str: return self._author_url
-
-    @author_url.setter
-    def author_url(self, author_url): self._author_url = author_url
 
     @property
     def published(self) -> datetime: return self._published
@@ -189,7 +194,7 @@ class Story(object):
         return count
 
     @property
-    def chapters(self) -> List[str]: return self._chapters
+    def chapters(self) -> List[Chapter]: return self._chapters
 
     def add_chapter(self, chapter) -> None: self._chapters.append(chapter)
 

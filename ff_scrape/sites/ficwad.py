@@ -134,8 +134,9 @@ class Ficwad(Site):
         # add author and title
         author_container = self._soup.find_all('span', {'class': 'author'})[0]
         author_element = author_container.find_all('a')[0]
-        self._fanfic.author = author_element.text
-        self._fanfic.author_url = self._web_domain + author_element['href']
+        author = author_element.text
+        author_url = self._web_domain + author_element['href']
+        self._fanfic.add_author(author, author_url)
 
         metadata_container = self._soup.find_all(True, {'class': 'storylist'})[0]
         title_element = metadata_container.find_all('h4')[0]

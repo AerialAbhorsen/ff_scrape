@@ -76,9 +76,10 @@ class FanficAuthors(Site):
         # get title and author from top center
         header = self._soup.find_all(True, {'class': 'page-header'})[0]
         header_objs = header.find_all(True, {'class': 'text-center'})
-        self._fanfic.author = header_objs[1].text.replace('By ', '')
+        author = header_objs[1].text.replace('By ', '')
+        author_url = self._url_obj.scheme + "://" + self._url_obj.netloc
         self._fanfic.title = header_objs[0].text
-        self._fanfic.author_url = self._url_obj.scheme + "://" + self._url_obj.netloc
+        self._fanfic.add_author(author, author_url)
 
         # get metadata info from story summary div
         metadata_container = self._soup.find_all(True, {'class': 'well'})[0]
