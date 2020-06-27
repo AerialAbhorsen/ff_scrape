@@ -129,18 +129,17 @@ class FanficAuthors(Site):
 
             # get page
             self._update_soup(url=url_fixed)
-            story = self._soup.find(id='story')
+            story = self._soup.find_all(True, {'class': 'story'})[0]
 
-            story_container = story.find_all(True, {'class': 'story'})[0]
             # remove the pager elements at the top and bottom
-            for element in story_container.find_all(True, {'class': 'pager'}):
+            for element in story.find_all(True, {'class': 'pager'}):
                 element.decompose()
             # remove the 'well' block at the top
-            for element in story_container.find_all(True, {'class': 'well'}):
+            for element in story.find_all(True, {'class': 'well'}):
                 element.decompose()
 
             chapter_object = Chapter()
-            chapter_object.processed_body = story_container.prettify()
+            chapter_object.processed_body = story.prettify()
             chapter_object.raw_body = self._soup.prettify()
             chapter_object.word_count = len(story.text.split())
             chapter_object.name = chapter['name']
