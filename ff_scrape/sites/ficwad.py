@@ -68,7 +68,7 @@ class Ficwad(Site):
 
     def check_story_exists(self) -> bool:
         """Verify that the fanfic exists"""
-        title_check = self.soup.find("title").string
+        title_check = self._soup.find("title").string
         if title_check == u'FicWad: fresh-picked original and fan fiction':
             return False
         return True
@@ -150,7 +150,7 @@ class Ficwad(Site):
 
         # meta block has complete at the end only if it is complete
         if len(meta_block.find_all(text=re.compile("complete", re.IGNORECASE))) > 0:
-            self._fanfic.status = 'Complete'
+            self._fanfic.status = standardize_status('Complete')
         else:
             self._fanfic.status = 'WIP'
 

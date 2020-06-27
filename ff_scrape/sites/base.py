@@ -98,13 +98,13 @@ class Site(object):
     def _update_soup(self, url: str = None, lenient: bool = True, cookie_jar=None) -> None:
         if url is None:
             url = self._url
-        page = requests.get(url)
+        page = requests.get(url, cookies=cookie_jar)
         if lenient:
-            self._soup = BeautifulSoup(page.text, features="html.parser", cookies=cookie_jar)
+            self._soup = BeautifulSoup(page.text, features="html.parser")
         else:
             # need to use html5lib due to ff.net having broken html in their site
             # most notably the chapter list
-            self._soup = BeautifulSoup(page.text, features="html5lib", cookies=cookie_jar)
+            self._soup = BeautifulSoup(page.text, features="html5lib")
 
     def get_meta(self) -> None:
         # get page

@@ -10,7 +10,8 @@ setup(
         'beautifulsoup4',
         'requests',
         'html5lib',
-        'python-dateutil'
+        'python-dateutil',
+        'html2bbcode'
     ],
     entry_points={
         'console_scripts': [
@@ -23,7 +24,8 @@ setup(
             'Ficwad=ff_scrape.sites.ficwad:Ficwad'
         ],
         'ff_scrape.formatters': [
-            'text=ff_scrape.formatters.text:Text'
+            'text=ff_scrape.formatters.text:Text',
+            'bbcode=ff_scrape.formatters.bbcode:BBCode'
         ],
         # 'ff_scrape.recorders': [
         #
