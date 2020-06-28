@@ -19,7 +19,7 @@ class HPFanficArchive(Site):
 
     def set_domain(self):
         """Sets the domain of the fanfic to Fanfiction.net"""
-        self._fanfic.domain = "HPFanficArchive"
+        self._fanfic.domain = "HP Fanfic Archive"
 
     def can_handle(self, url: str):
         if 'hpfanficarchive.com/' in url:

@@ -18,7 +18,7 @@ class FanfictionTests(unittest.TestCase):
 
     def test_domain(self):
         self.fanfiction.set_domain()
-        self.assertEqual(self.fanfiction._fanfic.domain, "fanficauthors.net", "set_domain works as expected")
+        self.assertEqual(self.fanfiction._fanfic.domain, "Fanfic Authors", "set_domain works as expected")
 
     def test_can_handle(self):
         url = "https://www.fanfiction.net/s/113445011"

@@ -22,7 +22,7 @@ class FanficAuthors(Site):
 
     def set_domain(self) -> None:
         """Sets the domain of the fanfic to Fanfiction.net"""
-        self._fanfic.domain = "fanficauthors.net"
+        self._fanfic.domain = "Fanfic Authors"
 
     def can_handle(self, url: str) -> bool:
         if 'fanficauthors.net/' in url:
