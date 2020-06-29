@@ -1,15 +1,17 @@
+import re
+
+rating_parentheses = re.compile("\\(.*\\)")
+rating_hyphen = re.compile(" - .*")
+
+
 def standardize_rating(rating):
+    rating = rating_parentheses.sub('', rating)
+    rating = rating_hyphen.sub('', rating)
     rating = rating.strip()
     if rating == 'Teens':
         return 'T'
     elif rating == 'Everyone':
         return 'E'
-    elif rating == 'PG (Parental guidance suggested)':
-        rating = 'PG'
-    elif rating == 'NC-17 - No One 17 and Under Admitted':
-        return 'NC-17'
-    elif rating == 'R - Restricted':
-        return 'R'
     elif rating == 'Mature':
         return 'M'
 
@@ -55,6 +57,8 @@ def standardize_universe(universe):
     universe = universe.strip()
     if universe == 'Harry Potter - J. K. Rowling':
         universe = 'Harry Potter'
+    if universe == 'balto':
+        universe = 'Balto'
     return universe
 
 # todo: add standardize pairing

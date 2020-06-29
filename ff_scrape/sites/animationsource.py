@@ -8,6 +8,7 @@ import re
 from dateutil.parser import parse
 import time
 
+
 class AnimationSource(Site):
     """Provides the logic to parse fanfics from animationsource.org"""
     _fandom: str
@@ -49,11 +50,13 @@ class AnimationSource(Site):
             url = "http://" + self.url
         url_split = url.split("/")
         # correct URL as needed for script
-        if len(url_split) <= 7:
+        if len(url_split) != 8:
+            raise URLError('Unknown URL format')
+        if url_split[7] == '':
             raise URLError('Unknown URL format')
 
-        while len(url_split) > 5:
-            url_split.pop(5)
+        temp = url_split[7].split('&')
+        url_split[7] = temp[0]
         url = '/'.join(url_split)
         return url
 
@@ -63,7 +66,7 @@ class AnimationSource(Site):
     def check_story_exists(self) -> bool:
         """Verify that the fanfic exists"""
         title = self._soup.find_all('div', {'class': 'bhaut2b'})[0]
-        if title.text == "The page can't be found":
+        if title.text == "The page can't be found!":
             self.log_warn("Story doesn't exist.")
             return False
         return True
@@ -71,7 +74,7 @@ class AnimationSource(Site):
     def record_story_metadata(self) -> None:
         """Record the metadata of the fanfic"""
 
-        colon_removal = re.compile("^\s+:\s+")
+        colon_removal = re.compile("^\\s+:\\s+")
 
         self._fanfic.raw_index_page = self._soup.prettify()
         self._fanfic.add_universe(standardize_universe(self._fandom))
@@ -109,10 +112,12 @@ class AnimationSource(Site):
         self._fanfic.rating = standardize_rating(rating_string)
 
         # get the category which we will store as genre
-        genre_text = header.find_all(text='Category')[0]
-        genre_string = genre_text.parent.next_sibling
-        genre_string = colon_removal.sub('', genre_string).strip()
-        self._fanfic.add_genre(standardize_genre(genre_string))
+        genre_text = header.find_all(text='Category')
+        if len(genre_text) > 0:
+            genre_text = genre_text[0]
+            genre_string = genre_text.parent.next_sibling
+            genre_string = colon_removal.sub('', genre_string).strip()
+            self._fanfic.add_genre(standardize_genre(genre_string))
 
         # get the description which we will store as summary
         description_text = header.find_all(text='Description')[0]
@@ -151,10 +156,10 @@ class AnimationSource(Site):
         link = self._url + "&deb=0&nsite=1"
         self._update_soup(link)
 
-        chapters = self._soup.find_all('span', {'class': 'f9'})
-        self._fanfic.add_chapter(self._extract_chapter(1))
-
-        for chapter in chapters:
+        chapters_raw = self._soup.find_all('span', {'class': 'f9'})
+        chapters = []
+        # need to iterate chapters first to extract details before decompose
+        for chapter in chapters_raw:
             chapter_number = chapter.text.strip()
 
             # continue if this is the link for the first chapter as that is already captured
@@ -163,8 +168,13 @@ class AnimationSource(Site):
 
             # find the link
             for link in chapter.find_all('a'):
-                time.sleep(self._chapter_sleep_time)
-                # get page
-                self._update_soup(url=link.attrs['href'])
+                chapters.append({'number': chapter_number, 'link': link.attrs['href']})
 
-                self._fanfic.add_chapter(self._extract_chapter(chapter_number))
+        self._fanfic.add_chapter(self._extract_chapter('1'))
+
+        for chapter in chapters:
+            time.sleep(self._chapter_sleep_time)
+            # get page
+            self._update_soup(url=chapter['link'])
+
+            self._fanfic.add_chapter(self._extract_chapter(chapter['number']))
