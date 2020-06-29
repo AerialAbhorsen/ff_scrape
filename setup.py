@@ -21,7 +21,8 @@ setup(
             'Fanfiction=ff_scrape.sites.fanfiction:Fanfiction',
             'HPFanficArchive=ff_scrape.sites.hpfanficarchive:HPFanficArchive',
             'FanficAuthors=ff_scrape.sites.fanficauthors:FanficAuthors',
-            'Ficwad=ff_scrape.sites.ficwad:Ficwad'
+            'Ficwad=ff_scrape.sites.ficwad:Ficwad',
+            'AnimationSource=ff_scrape.sites.animationsource:AnimationSource'
         ],
         'ff_scrape.formatters': [
             'text=ff_scrape.formatters.text:Text',

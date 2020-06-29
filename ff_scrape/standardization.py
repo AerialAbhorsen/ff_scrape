@@ -4,6 +4,8 @@ def standardize_rating(rating):
         return 'T'
     elif rating == 'Everyone':
         return 'E'
+    elif rating == 'PG (Parental guidance suggested)':
+        rating = 'PG'
     elif rating == 'NC-17 - No One 17 and Under Admitted':
         return 'NC-17'
     elif rating == 'R - Restricted':
